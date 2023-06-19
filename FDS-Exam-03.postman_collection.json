@@ -1,0 +1,298 @@
+{
+	"info": {
+		"_postman_id": "779b76b7-41cc-4bbf-80a5-41792f46ad97",
+		"name": "FDS-Exam-03",
+		"description": "# 🧪 Get started here\n\nThis template helps ensure your API continues to work as expected after updates or changes. It contains sample requests for a series of tests that validate different aspects of an API, including:\n\n1. **Status code verification:** We'll check if the API returns the expected status codes for various requests, ensuring reliability and proper error handling.\n2. **JSON schema verification:** We'll make sure the JSON response conforms to a specified JSON Schema, ensuring API contracts are honored.\n3. **Response time verification:** We'll verify that the API's response time is within the acceptable range, providing a smooth user experience and optimizing performance.\n4. **Response body verification:** We'll validate the structure and content of the response body for accuracy, ensuring the integrity of the data and preventing potential issues downstream.\n5. **Header verification:** We'll confirm the presence and correct values of specific headers in the response, enabling secure and well-structured communication between your app and its users.\n    \n\n## 🔖 **How to use this template**\n\n**Step 1:** Send the sample requests and view the response and test results.\n\n**Step 2:** Replace the sample request URLs with your desired API endpoints.\n\n**Step 3:** Customize the tests in the \"Tests\" tab if needed. Don't forget to save your changes.\n\n**Step 4:** Run the collection by selecting \"Run\".\n\n<img src=\"https://content.pstmn.io/666cfa65-6e00-4308-871b-f831128bc0ac/Y29sbGVjdGlvbi1ydW5uZXItYnV0dG9uLmpwZWc=\" width=\"246\" height=\"102\">\n\n### ℹ️ Resources\n\n[Scripting in Postman](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/)\n\n[Test script examples](https://learning.postman.com/docs/writing-scripts/script-references/test-examples/)\n\n[Postman Sandbox API reference](https://learning.postman.com/docs/sending-requests/grpc/postman-sandbox-api/#writing-assertions)\n\n[Using the Collection Runner](https://learning.postman.com/docs/collections/running-collections/intro-to-collection-runs/)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15807395"
+	},
+	"item": [
+		{
+			"name": "Load all events, check status, reponse headers, and some attributes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Verify response headers have expected values\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"    pm.expect(pm.response.headers.get(\"Content-Length\")).to.exist;",
+							"    pm.expect(pm.response.headers.get(\"Link\")).to.include(\"createEvent\");",
+							"});",
+							"",
+							"pm.test(\"Returns an event object\", () => {",
+							"    const data = pm.response.json()[0];",
+							"",
+							"    pm.expect(data).to.have.property(\"id\");",
+							"    pm.expect(data).to.have.property(\"topicShort\");",
+							"    pm.expect(data).to.have.property(\"topicLong\");",
+							"    pm.expect(data).to.have.property(\"address\");",
+							"    pm.expect(data).to.have.property(\"startDateAndTime\");",
+							"    pm.expect(data).to.have.property(\"endDateAndTime\");",
+							"    pm.expect(data).to.have.property(\"institution\");",
+							"    pm.expect(data).to.have.property(\"lecturer\");",
+							"    pm.expect(data).to.have.property(\"location\");",
+							"",
+							"    pm.expect(data.id).to.be.a('number');",
+							"    pm.expect(data.topicShort).to.be.a('string');",
+							"    pm.expect(data.startDateAndTime).to.be.a('string');",
+							"    pm.expect(data.endDateAndTime).to.be.a('string');",
+							"    pm.expect(data.institution).to.be.a('string');",
+							"    pm.expect(data.address).to.be.a('string');",
+							"    pm.expect(data.topicLong).to.be.a('string');",
+							"    pm.expect(data.location).to.be.a('string');",
+							"    pm.expect(data.lecturer).to.be.a('string');",
+							"});",
+							"",
+							"pm.collectionVariables.set(\"first-event-url\", pm.response.json()[0].self.href );",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}",
+					"host": [
+						"{{baseUrl}}"
+					]
+				},
+				"description": "The test on this request asserts that the reponse has a \"200 OK\" status.\n\nYou can check for any HTTP status code using the same mechanism, for example `pm.response.to.have.status(403)` if your API should return an \"Unauthorized\" response."
+			},
+			"response": []
+		},
+		{
+			"name": "Get first event from collection as single resource",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Verify response headers have expected values\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"    pm.expect(pm.response.headers.get(\"Content-Length\")).to.exist;",
+							"    pm.expect(pm.response.headers.get(\"Link\")).to.include(\"deleteEvent\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{first-event-url}}",
+					"host": [
+						"{{first-event-url}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create new event, check location header",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status code created', () => {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"Empty body\", function () {",
+							"    pm.response.to.have.body(\"\");",
+							"});",
+							"",
+							"pm.test(\"Verify response headers have expected values\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Location\")).to.include(\"http://localhost:8080/sev/api/events/\");",
+							"    pm.expect(pm.response.headers.get(\"Content-Length\")).to.exist;",
+							"});",
+							"",
+							"const lastLocation = pm.response.headers.get(\"Location\");",
+							"const urlParts = lastLocation.split('/');",
+							"const lastId = urlParts[urlParts.length - 1];",
+							"",
+							"pm.collectionVariables.set(\"last-event-url\", lastLocation );",
+							"pm.collectionVariables.set(\"last-event-id\", lastId );"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"address\": \"Sanderheinrichsleitenweg 20, 97074 Würzburg\",\n        \"endDateAndTime\": \"2023-06-17T15:15:00\",\n        \"institution\": \"Stanford University\",\n        \"lecturer\": \"Andrew Ng\",\n        \"location\": \"Lecture hall H.1.1\",\n        \"startDateAndTime\": \"2023-06-17T13:15:00\",\n        \"topicLong\": \"Introduction to the Foundations of Artificial Intelligence\",\n        \"topicShort\": \"Intro to AI\"\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}",
+					"host": [
+						"{{baseUrl}}"
+					]
+				},
+				"description": "This request has a test using Postman's built-in support for JSON Schema verification to ensure that the response data matches the expected shape.\n\nSchema validation can be used to verify your API returns data in the right format, without worrying about the exact values. This might be helpful when testing various inputs for a consistent output format.\n\nLearn more about JSON Schema at [https://json-schema.org](https://json-schema.org/.)."
+			},
+			"response": []
+		},
+		{
+			"name": "Update last created event",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status code no content', () => {",
+							"    pm.response.to.have.status(204);",
+							"});",
+							"",
+							"pm.test(\"Empty body\", function () {",
+							"    pm.response.to.have.body(\"\");",
+							"});",
+							"",
+							"pm.test(\"Verify response headers have expected values\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Link\")).to.include(\"getEvent\");",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"address\": \"Sanderheinrichsleitenweg 20, 97074 Würzburg\",\n        \"endDateAndTime\": \"2023-06-17T15:15:00\",\n        \"institution\": \"Stanford University\",\n        \"lecturer\": \"Andrew Ng\",\n        \"id\" : {{last-event-id}},\n        \"location\": \"Lecture hall H.1.1\",\n        \"startDateAndTime\": \"2023-06-17T13:15:00\",\n        \"topicLong\": \"Introduction to the Foundations of Artificial Intelligence\",\n        \"topicShort\": \"Intro to AI\"\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{last-event-url}}",
+					"host": [
+						"{{last-event-url}}"
+					]
+				},
+				"description": "This request uses tests to verify both the structure (existence and type of individual properties) and exact values of the response data.\n\nUse `pm.expect(subject)` to wrap test subjects, and [Chai](https://www.chaijs.com/api/bdd/) for assertions."
+			},
+			"response": []
+		},
+		{
+			"name": "Delete last event",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status code no content', () => {",
+							"    pm.response.to.have.status(204);",
+							"});",
+							"",
+							"pm.test(\"Empty body\", function () {",
+							"    pm.response.to.have.body(\"\");",
+							"});",
+							"",
+							"pm.test(\"Verify response headers have expected values\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Link\")).to.include(\"getAllEvents\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{last-event-url}}",
+					"host": [
+						"{{last-event-url}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080/sev/api/events"
+		},
+		{
+			"key": "last-event-url",
+			"value": ""
+		},
+		{
+			"key": "last-event-id",
+			"value": "10",
+			"type": "string"
+		},
+		{
+			"key": "first-event-url",
+			"value": ""
+		}
+	]
+}
