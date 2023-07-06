@@ -16,7 +16,13 @@ package de.fhws.fiw.fds.exam03.server.database;
 
 import de.fhws.fiw.fds.exam03.server.api.models.Event;
 import de.fhws.fiw.fds.sutton.server.database.IDatabaseAccessObject;
+import de.fhws.fiw.fds.sutton.server.database.SearchParameter;
+import de.fhws.fiw.fds.sutton.server.database.results.CollectionModelResult;
 
 public interface EventDao extends IDatabaseAccessObject<Event>
 {
+    CollectionModelResult<Event> readByTopicShort(String topicShort,
+                                                            SearchParameter searchParameter );
+
+    //   void resetDatabase( );
 }
