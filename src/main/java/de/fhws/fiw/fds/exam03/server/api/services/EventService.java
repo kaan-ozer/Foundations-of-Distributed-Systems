@@ -17,6 +17,7 @@ package de.fhws.fiw.fds.exam03.server.api.services;
 
 
 import de.fhws.fiw.fds.exam03.server.api.models.Event;
+import de.fhws.fiw.fds.exam03.server.api.queries.QueryByTopicShort;
 import de.fhws.fiw.fds.exam03.server.api.states.events.GetSingleEvent;
 import de.fhws.fiw.fds.exam03.server.database.utils.ResetDatabase;
 import de.fhws.fiw.fds.sutton.server.api.services.AbstractService;
@@ -28,7 +29,7 @@ import javax.ws.rs.core.Response;
 @Path( "events" ) public class EventService extends AbstractService
 {
 
-	@POST @Consumes( { MediaType.APPLICATION_JSON } )
+/*	@POST @Consumes( { MediaType.APPLICATION_JSON } )
 	public Response createSingleEvent( final Event personModel )
 	{
 		return new PostNewEvent.Builder( ).setModelToCreate( personModel )
@@ -38,7 +39,7 @@ import javax.ws.rs.core.Response;
 				.setContext( this.context )
 				.build( )
 				.execute( );
-	}
+	}*/
 
 	@GET @Produces( { MediaType.APPLICATION_JSON } )
 	public Response getAllEvents(
@@ -72,7 +73,7 @@ import javax.ws.rs.core.Response;
 				.execute( );
 	}
 
-	@PUT @Path( "{id: \\d+}" ) @Consumes( { MediaType.APPLICATION_JSON } )
+/*	@PUT @Path( "{id: \\d+}" ) @Consumes( { MediaType.APPLICATION_JSON } )
 	public Response updateSingleEvent( @PathParam( "id" ) final long id, final Event personModel )
 	{
 		return new PutSingleEvent.Builder( ).setRequestedId( id )
@@ -83,9 +84,9 @@ import javax.ws.rs.core.Response;
 				.setContext( this.context )
 				.build( )
 				.execute( );
-	}
+	}*/
 
-	@DELETE @Path( "{id: \\d+}" ) @Consumes( { MediaType.APPLICATION_JSON } )
+/*	@DELETE @Path( "{id: \\d+}" ) @Consumes( { MediaType.APPLICATION_JSON } )
 	public Response deleteSingleEvent( @PathParam( "id" ) final long id )
 	{
 		return new deleteSingleEvent.Builder( ).setRequestedId( id )
@@ -95,7 +96,7 @@ import javax.ws.rs.core.Response;
 				.setContext( this.context )
 				.build( )
 				.execute( );
-	}
+	}*/
 
 	@GET @Path( "resetdatabase" ) @Produces( { MediaType.APPLICATION_JSON } ) public Response resetDatabase( )
 	{
