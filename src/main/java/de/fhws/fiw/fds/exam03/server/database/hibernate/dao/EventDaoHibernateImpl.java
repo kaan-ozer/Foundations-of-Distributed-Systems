@@ -1,6 +1,7 @@
 package de.fhws.fiw.fds.exam03.server.database.hibernate.dao;
 
 import de.fhws.fiw.fds.exam03.server.database.hibernate.models.EventDB;
+import de.fhws.fiw.fds.exam03.server.database.hibernate.operations.LoadAllEventsByTopicShort;
 import de.fhws.fiw.fds.exam03.server.database.hibernate.operations.LoadAllEventsOperation;
 import de.fhws.fiw.fds.exam03.server.database.hibernate.operations.LoadEventById;
 import de.fhws.fiw.fds.exam03.server.database.hibernate.operations.PersistEventOperation;
