@@ -18,6 +18,7 @@ package de.fhws.fiw.fds.exam03.server.api.services;
 
 import de.fhws.fiw.fds.exam03.server.api.models.Event;
 import de.fhws.fiw.fds.exam03.server.api.queries.QueryByTopicShort;
+import de.fhws.fiw.fds.exam03.server.api.states.events.GetAllEvents;
 import de.fhws.fiw.fds.exam03.server.api.states.events.GetSingleEvent;
 import de.fhws.fiw.fds.exam03.server.database.utils.ResetDatabase;
 import de.fhws.fiw.fds.sutton.server.api.services.AbstractService;
