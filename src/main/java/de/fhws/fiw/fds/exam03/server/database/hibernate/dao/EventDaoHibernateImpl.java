@@ -18,10 +18,13 @@ public class EventDaoHibernateImpl implements EventDaoHibernate
 		populateDatabase( );
 	}
 
+
+	//*********************CRUD OPERATIONS*********************
 	@Override public NoContentResult create( EventDB model )
 	{
 		return new NoContentResult();
 	}
+
 
 	@Override public SingleModelHibernateResult<EventDB> readById( long id )
 	{
