@@ -27,22 +27,29 @@ public class EventDaoAdapter implements EventDao
 
 	private EventDaoHibernate dao = new EventDaoHibernateImpl( );
 
+
+
+
+
 	//*********************CRUD OPERATIONS*********************
 
 
 	@Override public NoContentResult create( Event model )
 	{
-		return null;
+		final EventDB dbModel = createFrom( model );
+		final NoContentResult returnValue = this.dao.create( dbModel );
+		model.setId( dbModel.getId( ) );
+		return returnValue;
 	}
 
 	@Override public CollectionModelResult<Event> readAll( )
 	{
-		return null;
+		return this.readAll( new SearchParameter( ) );
 	}
 
 	@Override public CollectionModelResult<Event> readAll( SearchParameter searchParameter )
 	{
-		return null;
+		return createResult( this.dao.readAll( searchParameter ) );
 	}
 
 	@Override public SingleModelResult<Event> readById(long id )
@@ -50,6 +57,11 @@ public class EventDaoAdapter implements EventDao
 		return createResult( this.dao.readById( id ) );
 	}
 
+	@Override public CollectionModelResult<Event> readByTopicShort( String topicShort ,
+																	SearchParameter searchParameter )
+	{
+		return createResult( this.dao.readByTopicShort(  topicShort, searchParameter ));
+	}
 
 
 	@Override
@@ -135,3 +147,11 @@ public class EventDaoAdapter implements EventDao
 		}
 	}
 }
+
+
+
+
+
+
+
+
