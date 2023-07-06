@@ -16,7 +16,9 @@ package de.fhws.fiw.fds.exam03.server.api.services;
 
 
 
+import de.fhws.fiw.fds.exam03.server.api.models.Event;
 import de.fhws.fiw.fds.exam03.server.api.states.events.GetSingleEvent;
+import de.fhws.fiw.fds.exam03.server.database.utils.ResetDatabase;
 import de.fhws.fiw.fds.sutton.server.api.services.AbstractService;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -25,6 +27,18 @@ import javax.ws.rs.core.Response;
 
 @Path( "events" ) public class EventService extends AbstractService
 {
+
+	@POST @Consumes( { MediaType.APPLICATION_JSON } )
+	public Response createSingleEvent( final Event personModel )
+	{
+		return new PostNewEvent.Builder( ).setModelToCreate( personModel )
+				.setUriInfo( this.uriInfo )
+				.setRequest( this.request )
+				.setHttpServletRequest( this.httpServletRequest )
+				.setContext( this.context )
+				.build( )
+				.execute( );
+	}
 
 
 
@@ -43,5 +57,35 @@ import javax.ws.rs.core.Response;
 				.execute( );
 	}
 
+	@PUT @Path( "{id: \\d+}" ) @Consumes( { MediaType.APPLICATION_JSON } )
+	public Response updateSingleEvent( @PathParam( "id" ) final long id, final Event personModel )
+	{
+		return new PutSingleEvent.Builder( ).setRequestedId( id )
+				.setModelToUpdate( personModel )
+				.setUriInfo( this.uriInfo )
+				.setRequest( this.request )
+				.setHttpServletRequest( this.httpServletRequest )
+				.setContext( this.context )
+				.build( )
+				.execute( );
+	}
 
+	@DELETE @Path( "{id: \\d+}" ) @Consumes( { MediaType.APPLICATION_JSON } )
+	public Response deleteSingleEvent( @PathParam( "id" ) final long id )
+	{
+		return new deleteSingleEvent.Builder( ).setRequestedId( id )
+				.setUriInfo( this.uriInfo )
+				.setRequest( this.request )
+				.setHttpServletRequest( this.httpServletRequest )
+				.setContext( this.context )
+				.build( )
+				.execute( );
+	}
+
+	@GET @Path( "resetdatabase" ) @Produces( { MediaType.APPLICATION_JSON } ) public Response resetDatabase( )
+	{
+		ResetDatabase.reset( );
+		return Response.ok( ).build( );
+	}
 }
+
