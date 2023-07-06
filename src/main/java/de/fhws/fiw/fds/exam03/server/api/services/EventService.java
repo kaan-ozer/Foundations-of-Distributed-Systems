@@ -14,17 +14,34 @@
 
 package de.fhws.fiw.fds.exam03.server.api.services;
 
-import de.fhws.fiw.fds.sutton.server.api.services.AbstractService;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
+
+import de.fhws.fiw.fds.exam03.server.api.states.events.GetSingleEvent;
+import de.fhws.fiw.fds.sutton.server.api.services.AbstractService;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
 
 @Path( "events" ) public class EventService extends AbstractService
 {
+
+
+
 	@GET
-	public Response getAllEvents()
+	@Path( "{id: \\d+}" )
+	@Produces( { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML } )
+	public Response getSingleEvent( @PathParam( "id" ) final long id )
 	{
-		return Response.ok().build();
+		return new GetSingleEvent.Builder( )
+				.setRequestedId( id )
+				.setUriInfo( this.uriInfo )
+				.setRequest( this.request )
+				.setHttpServletRequest( this.httpServletRequest )
+				.setContext( this.context )
+				.build( )
+				.execute( );
 	}
+
+
 }
