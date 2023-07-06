@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package de.fhws.fiw.fds.exam03.server.api.states.persons;
+package de.fhws.fiw.fds.exam03.server.api.states.events;
 
 import de.fhws.fiw.fds.exam03.server.Start;
 

@@ -15,8 +15,8 @@
 package de.fhws.fiw.fds.exam03.server.api.states.dispatcher;
 
 import de.fhws.fiw.fds.sutton.server.api.states.get.AbstractGetDispatcherState;
-import de.fhws.fiw.fds.exam03.server.api.states.persons.EventRelTypes;
-import de.fhws.fiw.fds.exam03.server.api.states.persons.EventUri;
+import de.fhws.fiw.fds.exam03.server.api.states.events.EventRelTypes;
+import de.fhws.fiw.fds.exam03.server.api.states.events.EventUri;
 
 public class GetDispatcher extends AbstractGetDispatcherState
 {
