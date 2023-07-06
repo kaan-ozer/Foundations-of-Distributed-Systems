@@ -40,6 +40,21 @@ import javax.ws.rs.core.Response;
 				.execute( );
 	}
 
+	@GET @Produces( { MediaType.APPLICATION_JSON } )
+	public Response getAllEvents(
+			@DefaultValue( "" ) @QueryParam( "topicShort" ) final String topicShort,
+			@DefaultValue( "0" ) @QueryParam( "offset" ) int offset,
+			@DefaultValue( "20" ) @QueryParam( "size" ) int size )
+	{
+		return new GetAllEvents.Builder( ).setQuery( new QueryByTopicShort( topicShort, offset, size ) )
+				.setUriInfo( this.uriInfo )
+				.setRequest( this.request )
+				.setHttpServletRequest( this.httpServletRequest )
+				.setContext( this.context )
+				.build( )
+				.execute( );
+	}
+
 
 
 	@GET
