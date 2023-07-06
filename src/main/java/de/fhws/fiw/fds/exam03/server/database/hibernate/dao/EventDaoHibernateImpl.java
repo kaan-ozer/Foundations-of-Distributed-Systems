@@ -1,6 +1,7 @@
 package de.fhws.fiw.fds.exam03.server.database.hibernate.dao;
 
 import de.fhws.fiw.fds.exam03.server.database.hibernate.models.EventDB;
+import de.fhws.fiw.fds.exam03.server.database.hibernate.operations.LoadAllEventsOperation;
 import de.fhws.fiw.fds.exam03.server.database.hibernate.operations.LoadEventById;
 import de.fhws.fiw.fds.exam03.server.database.hibernate.operations.PersistEventOperation;
 import de.fhws.fiw.fds.sutton.server.database.SearchParameter;
@@ -54,7 +55,7 @@ public class EventDaoHibernateImpl implements EventDaoHibernate
 	}
 	@Override public CollectionModelHibernateResult<EventDB> readAll( SearchParameter searchParameter )
 	{
-		return new LoadAllEventsOperations( emf ).start();
+		return new LoadAllEventsOperation( emf ).start();
 	}
 
 	@Override
