@@ -64,15 +64,16 @@ public class EventDaoAdapter implements EventDao
 	}
 
 
-	@Override
-	public NoContentResult update(Event model) {
-		return null;
+	@Override public NoContentResult update( Event model )
+	{
+		return this.dao.update( createFrom( model ) );
 	}
 
-	@Override
-	public NoContentResult delete(long id) {
-		return null;
+	@Override public NoContentResult delete( long id )
+	{
+		return this.dao.delete( id );
 	}
+
 
 
 	//*********************CREATE FORMS*********************
