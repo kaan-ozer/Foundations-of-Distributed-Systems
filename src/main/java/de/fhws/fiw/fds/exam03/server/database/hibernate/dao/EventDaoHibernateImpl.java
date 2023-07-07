@@ -1,10 +1,7 @@
 package de.fhws.fiw.fds.exam03.server.database.hibernate.dao;
 
 import de.fhws.fiw.fds.exam03.server.database.hibernate.models.EventDB;
-import de.fhws.fiw.fds.exam03.server.database.hibernate.operations.LoadAllEventsByTopicShort;
-import de.fhws.fiw.fds.exam03.server.database.hibernate.operations.LoadAllEventsOperation;
-import de.fhws.fiw.fds.exam03.server.database.hibernate.operations.LoadEventById;
-import de.fhws.fiw.fds.exam03.server.database.hibernate.operations.PersistEventOperation;
+import de.fhws.fiw.fds.exam03.server.database.hibernate.operations.*;
 import de.fhws.fiw.fds.sutton.server.database.SearchParameter;
 import de.fhws.fiw.fds.sutton.server.database.hibernate.results.CollectionModelHibernateResult;
 import de.fhws.fiw.fds.sutton.server.database.hibernate.results.SingleModelHibernateResult;
@@ -68,12 +65,12 @@ public class EventDaoHibernateImpl implements EventDaoHibernate
 
 	@Override public NoContentResult update( EventDB model )
 	{
-		return new NoContentResult();
+		return new UpdateEventOperation( emf, model ).start();
 	}
 
 	@Override public NoContentResult delete( long id )
 	{
-		return new NoContentResult();
+		return new DeleteEventByIdOperation( emf, id ).start();
 	}
 
 
