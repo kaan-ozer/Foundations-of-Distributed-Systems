@@ -18,8 +18,10 @@ import de.fhws.fiw.fds.exam03.server.api.models.Event;
 import de.fhws.fiw.fds.exam03.server.api.queries.QueryByTopicShort;
 import de.fhws.fiw.fds.exam03.server.api.states.events.*;
 import de.fhws.fiw.fds.exam03.server.database.utils.ResetDatabase;
+import de.fhws.fiw.fds.sutton.server.api.queries.PagingBehaviorUsingOffsetSize;
 import de.fhws.fiw.fds.sutton.server.api.services.AbstractService;
 import javax.ws.rs.*;
+import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -39,35 +41,53 @@ import javax.ws.rs.core.Response;
 				.execute( );
 	}
 
-	@GET @Produces( { MediaType.APPLICATION_JSON } )
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllEvents(
-			@DefaultValue( "" ) @QueryParam( "topicShort" ) final String topicShort,
-			@DefaultValue( "0" ) @QueryParam( "offset" ) int offset,
-			@DefaultValue( "20" ) @QueryParam( "size" ) int size )
+			@DefaultValue("") @QueryParam("topicShort") final String topicShort,
+			@DefaultValue("0") @QueryParam("offset") int offset,
+			@DefaultValue("20") @QueryParam("size") int size)
 	{
-		return new GetAllEvents.Builder( ).setQuery( new QueryByTopicShort( topicShort, offset, size ) )
-				.setUriInfo( this.uriInfo )
-				.setRequest( this.request )
-				.setHttpServletRequest( this.httpServletRequest )
-				.setContext( this.context )
-				.build( )
-				.execute( );
-	}
 
+		return new GetAllEvents.Builder()
+				.setQuery(new QueryByTopicShort(topicShort, offset, size).setPagingBehavior(new PagingBehaviorUsingOffsetSize(offset, size)))
+				.setUriInfo(this.uriInfo)
+				.setRequest(this.request)
+				.setHttpServletRequest(this.httpServletRequest)
+				.setContext(this.context)
+				.build()
+				.execute();
+
+
+	}
 
 	@GET
 	@Path( "{id: \\d+}" )
 	@Produces( { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML } )
 	public Response getSingleEvent( @PathParam( "id" ) final long id )
 	{
-		return new GetSingleEvent.Builder( )
-				.setRequestedId( id )
-				.setUriInfo( this.uriInfo )
-				.setRequest( this.request )
-				.setHttpServletRequest( this.httpServletRequest )
-				.setContext( this.context )
-				.build( )
-				.execute( );
+
+		CacheControl cacheControl = new CacheControl();
+		cacheControl.setNoCache(true);
+		cacheControl.setPrivate( false );
+		cacheControl.setMaxAge( 60 );
+		cacheControl.setNoTransform( false );
+
+		return Response.ok()
+				.cacheControl(cacheControl)
+				.entity(
+				 new GetSingleEvent.Builder( )
+						.setRequestedId( id )
+						.setUriInfo( this.uriInfo )
+						.setRequest( this.request )
+						.setHttpServletRequest( this.httpServletRequest )
+						.setContext( this.context )
+						.build( )
+						.execute( )
+				)
+				.build();
+
+
 	}
 
 	@PUT @Path( "{id: \\d+}" ) @Consumes( { MediaType.APPLICATION_JSON } )
