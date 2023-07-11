@@ -17,9 +17,14 @@ package de.fhws.fiw.fds.exam03.server.api.services;
 import de.fhws.fiw.fds.exam03.server.api.models.Event;
 import de.fhws.fiw.fds.exam03.server.api.queries.QueryByTopicShort;
 import de.fhws.fiw.fds.exam03.server.api.states.events.*;
+import de.fhws.fiw.fds.exam03.server.database.EventDao;
+import de.fhws.fiw.fds.exam03.server.database.hibernate.EventDaoAdapter;
 import de.fhws.fiw.fds.exam03.server.database.utils.ResetDatabase;
 import de.fhws.fiw.fds.sutton.server.api.queries.PagingBehaviorUsingOffsetSize;
 import de.fhws.fiw.fds.sutton.server.api.services.AbstractService;
+import de.fhws.fiw.fds.sutton.server.database.SearchParameter;
+import de.fhws.fiw.fds.sutton.server.database.results.CollectionModelResult;
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.MediaType;
@@ -49,7 +54,9 @@ import javax.ws.rs.core.Response;
 			@DefaultValue("20") @QueryParam("size") int size)
 	{
 
-		return new GetAllEvents.Builder()
+
+
+		Response response = new GetAllEvents.Builder()
 				.setQuery(new QueryByTopicShort(topicShort, offset, size).setPagingBehavior(new PagingBehaviorUsingOffsetSize(offset, size)))
 				.setUriInfo(this.uriInfo)
 				.setRequest(this.request)
@@ -59,6 +66,17 @@ import javax.ws.rs.core.Response;
 				.execute();
 
 
+		final CacheControl cacheControl = new CacheControl();
+		cacheControl.setPrivate(false);
+		cacheControl.setMaxAge(10);
+		cacheControl.setNoTransform(false);
+
+		return Response.ok()
+				.cacheControl(cacheControl)
+				.entity(
+						response.getEntity()
+				)
+				.build();
 	}
 
 	@GET
@@ -67,15 +85,9 @@ import javax.ws.rs.core.Response;
 	public Response getSingleEvent( @PathParam( "id" ) final long id )
 	{
 
-		CacheControl cacheControl = new CacheControl();
-		cacheControl.setNoCache(true);
-		cacheControl.setPrivate( false );
-		cacheControl.setMaxAge( 60 );
-		cacheControl.setNoTransform( false );
 
-		return Response.ok()
-				.cacheControl(cacheControl)
-				.entity(
+
+		return
 				 new GetSingleEvent.Builder( )
 						.setRequestedId( id )
 						.setUriInfo( this.uriInfo )
@@ -83,9 +95,9 @@ import javax.ws.rs.core.Response;
 						.setHttpServletRequest( this.httpServletRequest )
 						.setContext( this.context )
 						.build( )
-						.execute( )
-				)
-				.build();
+						.execute( );
+
+
 
 
 	}

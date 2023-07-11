@@ -37,7 +37,6 @@ public class GetAllEvents extends AbstractGetCollectionState<Event> {
 
 
 
-        // Önceki sayfa linkini ekleyin
 
     }
 
