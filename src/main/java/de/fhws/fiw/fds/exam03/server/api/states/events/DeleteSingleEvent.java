@@ -26,6 +26,7 @@ public class DeleteSingleEvent extends AbstractDeleteState<Event>
     @Override
     protected void defineTransitionLinks( )
     {
+        addLink( EventUri.REL_PATH, EventRelTypes.GET_ALL_EVENTS, getAcceptRequestHeader( ) );
     }
 
 

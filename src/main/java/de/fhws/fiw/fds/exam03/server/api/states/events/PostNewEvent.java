@@ -23,7 +23,6 @@ public class PostNewEvent extends AbstractPostState<Event> {
         @Override
         protected void defineTransitionLinks( )
         {
-
         }
 
 

@@ -26,7 +26,8 @@ public class PutSingleEvent extends AbstractPutState<Event>
     @Override
     protected void defineTransitionLinks( )
     {
-
+        addLink( EventUri.REL_PATH_ID, EventRelTypes.GET_SINGLE_EVENT, getAcceptRequestHeader( ),
+                this.requestedId );
     }
 
     @Override
