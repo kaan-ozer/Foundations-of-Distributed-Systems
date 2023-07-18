@@ -88,6 +88,7 @@ public class EventDaoAdapter implements EventDao
 		returnValue.setInstitution(model.getInstitution());
 		returnValue.setLecturer(model.getLecturer());
 		returnValue.setLocation(model.getLocation());
+
 		return returnValue;
 	}
 
@@ -102,6 +103,7 @@ public class EventDaoAdapter implements EventDao
 		returnValue.setInstitution(model.getInstitution());
 		returnValue.setLecturer(model.getLecturer());
 		returnValue.setLocation(model.getLocation());
+
 		return returnValue;
 	}
 

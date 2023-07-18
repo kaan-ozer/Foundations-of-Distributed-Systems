@@ -14,12 +14,30 @@
 
 package de.fhws.fiw.fds.exam03.server.api.models;
 
+
 import de.fhws.fiw.fds.sutton.server.api.models.AbstractModel;
+import org.glassfish.jersey.linking.InjectLink;
 
-public class Event extends AbstractModel
+import com.owlike.genson.annotation.JsonConverter;
+import de.fhws.fiw.fds.sutton.server.api.converter.JsonServerLinkConverter;
+import jakarta.xml.bind.annotation.adapters.XmlAdapter;
+
+import com.owlike.genson.annotation.JsonConverter;
+import de.fhws.fiw.fds.sutton.server.api.converter.JsonServerLinkConverter;
+import de.fhws.fiw.fds.sutton.server.api.converter.XmlServerLinkConverter;
+
+import javax.ws.rs.core.Link;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import java.io.Serializable;
+
+@XmlRootElement
+@XmlAccessorType( XmlAccessType.FIELD )
+public class Event extends AbstractModel implements Serializable
 {
-
-
 
     private String topicShort;
     private String topicLong;
@@ -30,6 +48,15 @@ public class Event extends AbstractModel
     private String lecturer;
     private String location;
 
+    @InjectLink(
+            style = InjectLink.Style.ABSOLUTE,
+            value = "/events/${instance.id}",
+            rel = "self",
+            title = "self",
+            type = "application/json",
+            condition = "${instance.primaryId == 0}"
+    )
+    private Link selfLinkPrimary;
 
 
     public Event() {
@@ -48,6 +75,14 @@ public class Event extends AbstractModel
         this.location = location;
     }
 
+    @JsonConverter(JsonServerLinkConverter.class)
+    public Link getSelfLinkPrimary() {
+        return selfLinkPrimary;
+    }
+
+    public void setSelfLinkPrimary(Link selfLinkPrimary) {
+        this.selfLinkPrimary = selfLinkPrimary;
+    }
 
     public String getTopicShort() {
         return topicShort;
@@ -112,4 +147,21 @@ public class Event extends AbstractModel
     public void setLocation(String location) {
         this.location = location;
     }
+
+
+
+   /* @Override public String toString( )
+    {
+        return "Event{" +
+                "id=" + id +
+                ", topicShort='" + topicShort + '\'' +
+                ", topicLong='" + topicLong + '\'' +
+                ", address=" + address +
+                ", startDateAndTime='" + startDateAndTime + '\'' +
+                ", endDateAndTime='" + endDateAndTime + '\'' +
+                ", institution='" + institution + '\'' +
+                ", lecturer='" + lecturer + '\'' +
+                ", location='" + location + '\'' +
+                '}';
+    }*/
 }

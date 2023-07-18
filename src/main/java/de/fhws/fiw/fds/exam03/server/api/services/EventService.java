@@ -56,7 +56,7 @@ import javax.ws.rs.core.Response;
 
 
 
-		Response response = new GetAllEvents.Builder()
+		/*Response response = new GetAllEvents.Builder()
 				.setQuery(new QueryByTopicShort(topicShort, offset, size).setPagingBehavior(new PagingBehaviorUsingOffsetSize(offset, size)))
 				.setUriInfo(this.uriInfo)
 				.setRequest(this.request)
@@ -66,17 +66,50 @@ import javax.ws.rs.core.Response;
 				.execute();
 
 
+
+
+
 		final CacheControl cacheControl = new CacheControl();
 		cacheControl.setPrivate(false);
 		cacheControl.setMaxAge(10);
 		cacheControl.setNoTransform(false);
 
 		return Response.ok()
+
 				.cacheControl(cacheControl)
 				.entity(
 						response.getEntity()
 				)
-				.build();
+				.build();*/
+
+		Response response = new GetAllEvents.Builder()
+
+				.setQuery(new QueryByTopicShort(topicShort, offset, size).
+						setPagingBehavior(new PagingBehaviorUsingOffsetSize(offset, size)))
+				.setUriInfo(this.uriInfo)
+				.setRequest(this.request)
+				.setHttpServletRequest(this.httpServletRequest)
+				.setContext(this.context)
+				.build()
+				.execute();
+
+		final CacheControl cacheControl = new CacheControl();
+		cacheControl.setPrivate(false);
+		cacheControl.setMaxAge(10);
+		cacheControl.setNoTransform(false);
+
+		Response.ResponseBuilder responseBuilder = Response.ok()
+				.cacheControl(cacheControl);
+		responseBuilder.entity(response.getEntity());
+		response.getHeaders().forEach((name, values) -> {
+			for (Object value : values) {
+				responseBuilder.header(name.toString(), value.toString());
+			}
+		});
+		Response finalResponse = responseBuilder.build();
+
+		return finalResponse;
+
 	}
 
 	@GET

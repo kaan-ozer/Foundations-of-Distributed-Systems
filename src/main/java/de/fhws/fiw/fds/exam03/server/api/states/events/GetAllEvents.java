@@ -34,10 +34,6 @@ public class GetAllEvents extends AbstractGetCollectionState<Event> {
     {
         addLink( EventUri.REL_PATH, EventRelTypes.CREATE_EVENT, getAcceptRequestHeader( ) );
 
-
-
-
-
     }
 
     protected void defineHttpResponseBody( )
