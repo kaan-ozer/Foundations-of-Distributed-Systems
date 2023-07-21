@@ -11,13 +11,12 @@ import de.fhws.fiw.fds.sutton.server.database.SearchParameter;
 
 public class QueryByTopicShort extends AbstractQuery<Event>  {
     private String topicShort;
-    private PagingBehavior<Event> pagingBehavior;
 
     public QueryByTopicShort( String topicShort, int offset, int size )
     {
         this.topicShort = topicShort;
 
-        this.pagingBehavior = new PagingBehaviorUsingOffsetSize<Event>( offset, size );
+        this.pagingBehavior = new PagingBehaviorUsingOffsetSize<Event>(offset, size );
     }
 
     public String getTopicShort() {
@@ -31,8 +30,10 @@ public class QueryByTopicShort extends AbstractQuery<Event>  {
     protected CollectionModelResult<Event> doExecuteQuery(SearchParameter searchParameter ) throws DatabaseException
     {
 
-        searchParameter.setOffset(pagingBehavior.getOffset());
+
+        /*searchParameter.setOffset(pagingBehavior.getOffset());
         searchParameter.setSize(pagingBehavior.getSize());
+*/
 
         return DaoFactory.getInstance( ).getEventDao( ).readByTopicShort(
                 this.topicShort,

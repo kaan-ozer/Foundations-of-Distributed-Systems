@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+    <Filter className="org.apache.catalina.filters.CorsFilter" />
+    <Filter-Mapping
+            filter-name="CorsFilter"
+            url-pattern="/*"
+    />
+</Context>

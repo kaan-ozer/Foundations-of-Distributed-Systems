@@ -44,8 +44,9 @@ public class LoadAllEventsByTopicShort
         TypedQuery<EventDB> query = em.createQuery(filterByNames);
 
         // Apply offset and size
-        query.setFirstResult(searchParameter.getOffset());
+   /*     query.setFirstResult(searchParameter.getOffset());
         query.setMaxResults(searchParameter.getSize());
+*/
 
         return new CollectionModelHibernateResult<>(query.getResultList());
     }

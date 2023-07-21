@@ -51,10 +51,11 @@ import javax.ws.rs.core.Response;
 			@DefaultValue("20") @QueryParam("size") int size)
 	{
 
-		Response response = new GetAllEvents.Builder()
+		/*Response response =*/
 
-				.setQuery(new QueryByTopicShort(topicShort, offset, size).
-						setPagingBehavior(new PagingBehaviorUsingOffsetSize(offset, size)))
+		return new GetAllEvents.Builder()
+
+				.setQuery(new QueryByTopicShort(topicShort, offset, size))
 				.setUriInfo(this.uriInfo)
 				.setRequest(this.request)
 				.setHttpServletRequest(this.httpServletRequest)
@@ -62,7 +63,9 @@ import javax.ws.rs.core.Response;
 				.build()
 				.execute();
 
-		final CacheControl cacheControl = new CacheControl();
+
+
+		/*final CacheControl cacheControl = new CacheControl();
 		cacheControl.setPrivate(false);
 		cacheControl.setMaxAge(10);
 		cacheControl.setNoTransform(false);
@@ -77,7 +80,7 @@ import javax.ws.rs.core.Response;
 		});
 		Response finalResponse = responseBuilder.build();
 
-		return finalResponse;
+		return finalResponse;*/
 
 	}
 
