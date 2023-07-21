@@ -31,10 +31,6 @@ public class QueryByTopicShort extends AbstractQuery<Event>  {
     {
 
 
-        /*searchParameter.setOffset(pagingBehavior.getOffset());
-        searchParameter.setSize(pagingBehavior.getSize());
-*/
-
         return DaoFactory.getInstance( ).getEventDao( ).readByTopicShort(
                 this.topicShort,
                 searchParameter );

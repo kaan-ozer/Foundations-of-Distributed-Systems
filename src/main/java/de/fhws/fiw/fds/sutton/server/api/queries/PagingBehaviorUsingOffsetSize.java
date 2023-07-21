@@ -79,6 +79,8 @@ public class PagingBehaviorUsingOffsetSize<T extends AbstractModel> extends Pagi
 	 */
 	protected String sizeQueryParamName = QUERY_PARAM_SIZE;
 
+
+
 	private PagingBehaviorUsingOffsetSize( )
 	{
 	}

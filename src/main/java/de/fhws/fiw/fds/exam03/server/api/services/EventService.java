@@ -27,6 +27,7 @@ import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import static de.fhws.fiw.fds.sutton.server.api.queries.PagingBehaviorUsingOffsetSize.*;
 
 @Path( "events" ) public class EventService extends AbstractService
 {
@@ -47,8 +48,8 @@ import javax.ws.rs.core.Response;
 	@Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
 	public Response getAllEvents(
 			@DefaultValue("") @QueryParam("topicShort") final String topicShort,
-			@DefaultValue("0") @QueryParam("offset") int offset,
-			@DefaultValue("20") @QueryParam("size") int size)
+			@DefaultValue("0") @QueryParam(QUERY_PARAM_OFFSET) int offset,
+			@DefaultValue(DEFAULT_PAGE_SIZE_STR) @QueryParam(QUERY_PARAM_SIZE) int size)
 	{
 
 		/*Response response =*/

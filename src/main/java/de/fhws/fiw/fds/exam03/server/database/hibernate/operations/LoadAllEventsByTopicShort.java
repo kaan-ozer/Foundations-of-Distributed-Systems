@@ -43,12 +43,19 @@ public class LoadAllEventsByTopicShort
 
         TypedQuery<EventDB> query = em.createQuery(filterByNames);
 
-        // Apply offset and size
-   /*     query.setFirstResult(searchParameter.getOffset());
-        query.setMaxResults(searchParameter.getSize());
-*/
+        // Calculate total number of results before applying offset and size
+        int totalResults = em.createQuery(filterByNames).getResultList().size();
 
-        return new CollectionModelHibernateResult<>(query.getResultList());
+        // Apply offset and size
+        query.setFirstResult(searchParameter.getOffset());
+        query.setMaxResults(searchParameter.getSize());
+
+        CollectionModelHibernateResult<EventDB> returnValue = new CollectionModelHibernateResult<>(query.getResultList());
+        returnValue.setTotalNumberOfResult(totalResults); // Set the total count of results
+
+
+
+        return returnValue;
     }
 
     @Override

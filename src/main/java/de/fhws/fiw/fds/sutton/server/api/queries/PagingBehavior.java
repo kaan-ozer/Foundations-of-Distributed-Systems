@@ -23,11 +23,13 @@ import de.fhws.fiw.fds.sutton.server.api.models.AbstractModel;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 
+
 /**
  * The PagingBehavior provides the basic requirements to create different paging mechanisms
  */
 public abstract class PagingBehavior<T extends AbstractModel>
 {
+
 
 	/**
 	 * Returns the offset, where the result's page should start
