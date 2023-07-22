@@ -7,6 +7,6 @@ import de.fhws.fiw.fds.sutton.server.database.hibernate.results.CollectionModelH
 
 public interface EventDaoHibernate extends IDataAccessObjectHibernate<EventDB>
 {
-    public CollectionModelHibernateResult<EventDB> readByTopicShort(String topicShort,
+    public CollectionModelHibernateResult<EventDB> readByTopic(String search,String order,
                                                                     SearchParameter searchParameter );
 }

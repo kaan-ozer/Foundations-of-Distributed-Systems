@@ -15,11 +15,11 @@
 package de.fhws.fiw.fds.exam03.server.api.services;
 
 import de.fhws.fiw.fds.exam03.server.api.models.Event;
-import de.fhws.fiw.fds.exam03.server.api.queries.QueryByTopicShort;
+import de.fhws.fiw.fds.exam03.server.api.queries.QueryByTopic;
 import de.fhws.fiw.fds.exam03.server.api.states.events.*;
 
 import de.fhws.fiw.fds.exam03.server.database.utils.ResetDatabase;
-import de.fhws.fiw.fds.sutton.server.api.queries.PagingBehaviorUsingOffsetSize;
+import de.fhws.fiw.fds.sutton.server.api.hyperlinks.Hyperlinks;
 import de.fhws.fiw.fds.sutton.server.api.services.AbstractService;
 
 import javax.ws.rs.*;
@@ -44,19 +44,18 @@ import static de.fhws.fiw.fds.sutton.server.api.queries.PagingBehaviorUsingOffse
 				.execute( );
 	}
 
+
 	@GET
 	@Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
 	public Response getAllEvents(
-			@DefaultValue("") @QueryParam("topicShort") final String topicShort,
+			@DefaultValue("") @QueryParam("search") final String search,
+			@DefaultValue( "+name" ) @QueryParam( "order" ) final String order,
 			@DefaultValue("0") @QueryParam(QUERY_PARAM_OFFSET) int offset,
 			@DefaultValue(DEFAULT_PAGE_SIZE_STR) @QueryParam(QUERY_PARAM_SIZE) int size)
 	{
 
-		/*Response response =*/
-
-		return new GetAllEvents.Builder()
-
-				.setQuery(new QueryByTopicShort(topicShort, offset, size))
+		Response response = new GetAllEvents.Builder()
+				.setQuery(new QueryByTopic(search,order, offset, size))
 				.setUriInfo(this.uriInfo)
 				.setRequest(this.request)
 				.setHttpServletRequest(this.httpServletRequest)
@@ -65,24 +64,40 @@ import static de.fhws.fiw.fds.sutton.server.api.queries.PagingBehaviorUsingOffse
 				.execute();
 
 
+		Response.ResponseBuilder responseBuilder = Response.fromResponse(response);
 
-		/*final CacheControl cacheControl = new CacheControl();
-		cacheControl.setPrivate(false);
-		cacheControl.setMaxAge(10);
-		cacheControl.setNoTransform(false);
 
-		Response.ResponseBuilder responseBuilder = Response.ok()
-				.cacheControl(cacheControl);
-		responseBuilder.entity(response.getEntity());
-		response.getHeaders().forEach((name, values) -> {
-			for (Object value : values) {
-				responseBuilder.header(name.toString(), value.toString());
-			}
-		});
-		Response finalResponse = responseBuilder.build();
+		Hyperlinks.addLink(uriInfo, responseBuilder, "/events?search={SEARCH}",
+				"searchForEventByTopic", "application/json");
 
-		return finalResponse;*/
 
+		Hyperlinks.addLink(uriInfo, responseBuilder,
+				"/events?search=" + search + "&order=" + EventComparator.reverseSearchOrder( order ),
+				"reverseSearchOrder", "application/json");
+
+
+
+		return responseBuilder.build();
+
+
+		/*
+		final CacheControl cacheControl = new CacheControl();
+        cacheControl.setPrivate(false);
+        cacheControl.setMaxAge(10);
+        cacheControl.setNoTransform(false);
+
+        Response.ResponseBuilder responseBuilder = Response.ok()
+                .cacheControl(cacheControl);
+        responseBuilder.entity(response.getEntity());
+        response.getHeaders().forEach((name, values) -> {
+            for (Object value : values) {
+                responseBuilder.header(name.toString(), value.toString());
+            }
+        });
+        Response finalResponse = responseBuilder.build();
+
+        return finalResponse;
+        */
 	}
 
 	@GET

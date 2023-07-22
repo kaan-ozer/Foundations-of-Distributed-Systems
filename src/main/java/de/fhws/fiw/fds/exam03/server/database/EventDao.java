@@ -21,7 +21,7 @@ import de.fhws.fiw.fds.sutton.server.database.results.CollectionModelResult;
 
 public interface EventDao extends IDatabaseAccessObject<Event>
 {
-    CollectionModelResult<Event> readByTopicShort(String topicShort,
+    CollectionModelResult<Event> readByTopic(String topicShort,String order,
                                                             SearchParameter searchParameter );
 
     //   void resetDatabase( );
