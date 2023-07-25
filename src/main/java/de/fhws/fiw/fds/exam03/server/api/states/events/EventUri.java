@@ -17,11 +17,18 @@
 package de.fhws.fiw.fds.exam03.server.api.states.events;
 
 import de.fhws.fiw.fds.exam03.server.Start;
+import de.fhws.fiw.fds.exam03.server.api.services.EventComparator;
 
 public interface EventUri
 {
-
+	String REVERSE_ORDER_TOPIC = "&order=-topic";
+	String REVERSE_ORDER_DATE = "&order=-date";
+	String SEARCH_ELEMENT= "?search={SEARCH}";
 	String PATH_ELEMENT = "events";
 	String REL_PATH = Start.CONTEXT_PATH + "/api/" + PATH_ELEMENT;
+	String REL_PATH_BY_SEARCH = REL_PATH + SEARCH_ELEMENT;
+	String REL_PATH_BY_SEARCH_REVERSE_ORDER_TOPIC = REL_PATH + REVERSE_ORDER_TOPIC;
+	String REL_PATH_BY_SEARCH_REVERSE_ORDER_DATE = REL_PATH + REVERSE_ORDER_DATE;
 	String REL_PATH_ID = REL_PATH + "/{id}";
 }
+

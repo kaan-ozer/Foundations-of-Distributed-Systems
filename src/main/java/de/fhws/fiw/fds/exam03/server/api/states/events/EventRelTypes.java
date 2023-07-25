@@ -16,10 +16,20 @@
 
 package de.fhws.fiw.fds.exam03.server.api.states.events;
 
+import de.fhws.fiw.fds.exam03.server.api.services.EventComparator;
+import de.fhws.fiw.fds.sutton.server.api.hyperlinks.Hyperlinks;
+
 public interface EventRelTypes
 {
 	String CREATE_EVENT = "createEvent";
 	String GET_ALL_EVENTS = "getAllEvents";
+
+	String GET_ALL_EVENTS_BY_SEARCH = "getAllEventsBySearch";
+
+	String GET_ALL_EVENTS_BY_SEARCH_REVERSE_ORDER_TOPIC = "reverseSearchOrderWithTopic";
+
+	String GET_ALL_EVENTS_BY_SEARCH_REVERSE_ORDER_DATE = "reverseSearchOrderWithDate";
+
 	String UPDATE_SINGLE_EVENT = "updateEvent";
 	String DELETE_SINGLE_EVENT = "deleteEvent";
 	String GET_SINGLE_EVENT = "getEvent";

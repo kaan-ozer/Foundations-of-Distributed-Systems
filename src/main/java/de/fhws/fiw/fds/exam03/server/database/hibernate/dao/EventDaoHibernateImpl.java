@@ -23,7 +23,7 @@ public class EventDaoHibernateImpl implements EventDaoHibernate
 
 	private void populateDatabase( )
 	{
-		IntStream.range( 0, 100 ).forEach(i -> create( createEvent( ) ) );
+		IntStream.range( 0, 1 ).forEach(i -> create( createEvent( ) ) );
 	}
 
 	//*********************CRUD OPERATIONS*********************
@@ -34,14 +34,14 @@ public class EventDaoHibernateImpl implements EventDaoHibernate
 
 	private EventDB createEvent() {
 		final EventDB returnValue = new EventDB();
-		returnValue.setTopicShort("Bond");
-		returnValue.setTopicLong("James Bond");
-		returnValue.setAddress("123 Main Street");
-		returnValue.setStartDateAndTime("2023-07-05 10:00");
-		returnValue.setEndDateAndTime("2023-07-05 12:00");
-		returnValue.setInstitution("MI6");
-		returnValue.setLecturer("James Bond");
-		returnValue.setLocation("London");
+		returnValue.setTopicShort("Math");
+		returnValue.setTopicLong("Mathematics");
+		returnValue.setAddress("789 Elm Street");
+		returnValue.setStartDateAndTime("2023-08-15 09:00");
+		returnValue.setEndDateAndTime("2023-08-15 12:00");
+		returnValue.setInstitution("University XYZ");
+		returnValue.setLecturer("Prof. Johnson");
+		returnValue.setLocation("City A");
 		return returnValue;
 	}
 

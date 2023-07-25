@@ -14,6 +14,7 @@
 
 package de.fhws.fiw.fds.exam03.server.api.states.dispatcher;
 
+
 import de.fhws.fiw.fds.sutton.server.api.states.get.AbstractGetDispatcherState;
 import de.fhws.fiw.fds.exam03.server.api.states.events.EventRelTypes;
 import de.fhws.fiw.fds.exam03.server.api.states.events.EventUri;
@@ -30,7 +31,10 @@ public class GetDispatcher extends AbstractGetDispatcherState
 	protected void defineTransitionLinks( )
 	{
 		addLink( EventUri.REL_PATH, EventRelTypes.GET_ALL_EVENTS, getAcceptRequestHeader( ) );
+		addLink(EventUri.REL_PATH_BY_SEARCH,EventRelTypes.GET_ALL_EVENTS_BY_SEARCH,getAcceptRequestHeader());
+
 	}
+
 
 	public static class Builder extends AbstractDispatcherStateBuilder
 	{

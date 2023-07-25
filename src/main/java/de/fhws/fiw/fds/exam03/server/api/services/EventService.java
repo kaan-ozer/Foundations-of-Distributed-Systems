@@ -49,7 +49,7 @@ import static de.fhws.fiw.fds.sutton.server.api.queries.PagingBehaviorUsingOffse
 	@Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
 	public Response getAllEvents(
 			@DefaultValue("") @QueryParam("search") final String search,
-			@DefaultValue( "+name" ) @QueryParam( "order" ) final String order,
+			@DefaultValue( "+topic" ) @QueryParam( "order" ) final String order,
 			@DefaultValue("0") @QueryParam(QUERY_PARAM_OFFSET) int offset,
 			@DefaultValue(DEFAULT_PAGE_SIZE_STR) @QueryParam(QUERY_PARAM_SIZE) int size)
 	{
@@ -67,13 +67,16 @@ import static de.fhws.fiw.fds.sutton.server.api.queries.PagingBehaviorUsingOffse
 		Response.ResponseBuilder responseBuilder = Response.fromResponse(response);
 
 
-		Hyperlinks.addLink(uriInfo, responseBuilder, "/events?search={SEARCH}",
-				"searchForEventByTopic", "application/json");
+		Hyperlinks.addLink(uriInfo, responseBuilder, "/exam03/api/events?search={SEARCH}",
+				"getAllEventsBySearch", "application/json");
 
 
 		Hyperlinks.addLink(uriInfo, responseBuilder,
-				"/events?search=" + search + "&order=" + EventComparator.reverseSearchOrder( order ),
-				"reverseSearchOrder", "application/json");
+				"/exam03/api/events?search=" + search + "&order=" + EventComparator.reverseSearchOrder( order ),
+				"reverseSearchOrderWithTopic", "application/json");
+
+
+
 
 
 
