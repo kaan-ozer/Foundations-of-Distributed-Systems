@@ -1,14 +1,42 @@
 import axios from 'axios';
 
-const httpClient = axios.create({
-    headers: {
-        "Accept": "application/json",
+
+class NetworkService {
+
+     httpClient = axios.create({
+        headers: {
+            "Accept": "application/json",
+        }
+    });
+
+
+    getDispatcherState() {
+        return this.httpClient.get("http://localhost:8080/exam03/api");
     }
-});
 
-export const getDispatcherState = (url) => httpClient.get(url);
-export const getAllEventsState = (url) => httpClient.get(url);
-export const getSingleEventState = (url) => httpClient.get(url);
-export const getAllEventState = (url) => httpClient.get(url);
+    getAllEventsState(url) {
+        return this.httpClient.get(url);
+    }
+
+// @@@END
+
+    getSingleEventState(url) {
+        return this.httpClient.get(url);
+    }
+
+    postSingleEvent(url, event) {
+        return this.httpClient.post(url, event);
+    }
+
+    updateSingleEvent(url, event) {
+        return this.httpClient.put(url, event);
+    }
+
+    deleteSingleEvent(url) {
+        return this.httpClient.delete(url);
+    }
 
 
+}
+
+export default new NetworkService();

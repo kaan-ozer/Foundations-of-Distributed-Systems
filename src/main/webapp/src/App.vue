@@ -1,20 +1,17 @@
 <template>
   <div id="app">
-    <events-using-axios></events-using-axios>
+    <MultipleEventsApp/>
   </div>
 </template>
 
 <script>
-
-import EventsUsingAxios from "@/components/events/EventsUsingAxios.vue";
+import MultipleEventsApp from "@/components/main/MultipleEventsApp.vue";
 
 export default {
   name: 'App',
   components: {
-    EventsUsingAxios
-
-
-  },
+    MultipleEventsApp,
+  }
 }
 </script>
 
@@ -23,8 +20,8 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 </style>
