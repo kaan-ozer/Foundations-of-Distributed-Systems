@@ -73,7 +73,7 @@ import static de.fhws.fiw.fds.sutton.server.api.queries.PagingBehaviorUsingOffse
 
 		Hyperlinks.addLink(uriInfo, responseBuilder,
 				"/exam03/api/events?search=" + search + "&order=" + EventComparator.reverseSearchOrder( order ),
-				"reverseSearchOrderWithTopic", "application/json");
+				"reverseSearchOrderBySearch", "application/json");
 
 
 
