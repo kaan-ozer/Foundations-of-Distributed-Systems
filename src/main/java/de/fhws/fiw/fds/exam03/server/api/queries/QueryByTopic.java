@@ -10,14 +10,33 @@ import de.fhws.fiw.fds.sutton.server.database.SearchParameter;
 
 public class QueryByTopic extends AbstractQuery<Event>  {
     private String search;
+
+    private String startDateAndTime;
     private String order;
 
-    public QueryByTopic(String search,String order, int offset, int size )
+    public QueryByTopic(String search,String startDateAndTime,String order, int offset, int size )
     {
         this.search = search;
+        this.startDateAndTime = startDateAndTime;
         this.order = order;
 
         this.pagingBehavior = new PagingBehaviorUsingOffsetSize<Event>(offset, size );
+    }
+
+    public String getStartDateAndTime() {
+        return startDateAndTime;
+    }
+
+    public void setStartDateAndTime(String startDateAndTime) {
+        this.startDateAndTime = startDateAndTime;
+    }
+
+    public String getOrder() {
+        return order;
+    }
+
+    public void setOrder(String order) {
+        this.order = order;
     }
 
     public String getSearch() {
@@ -33,7 +52,7 @@ public class QueryByTopic extends AbstractQuery<Event>  {
 
 
         return DaoFactory.getInstance( ).getEventDao( ).readByTopic(
-                this.search,this.order,
+                this.search,this.startDateAndTime,this.order,
                 searchParameter );
     }
 }

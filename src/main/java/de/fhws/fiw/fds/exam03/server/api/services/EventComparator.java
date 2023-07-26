@@ -16,10 +16,6 @@ public class EventComparator
                 return "-topic";
             case "-topic":
                 return "%2Btopic";
-            case "+date":
-                return "-date";
-            case "-date":
-                return "%2Bdate";
             default:
                 return "%2Btopic";
         }

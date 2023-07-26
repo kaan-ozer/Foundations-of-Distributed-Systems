@@ -37,8 +37,8 @@ public class EventDaoHibernateImpl implements EventDaoHibernate
 		returnValue.setTopicShort("Math");
 		returnValue.setTopicLong("Mathematics");
 		returnValue.setAddress("789 Elm Street");
-		returnValue.setStartDateAndTime("2023-08-15 09:00");
-		returnValue.setEndDateAndTime("2023-08-15 12:00");
+		returnValue.setStartDateAndTime("2023-10-17T13:15:00");
+		returnValue.setEndDateAndTime("2023-11-17T13:18:00");
 		returnValue.setInstitution("University XYZ");
 		returnValue.setLecturer("Prof. Johnson");
 		returnValue.setLocation("City A");
@@ -57,10 +57,10 @@ public class EventDaoHibernateImpl implements EventDaoHibernate
 	}
 
 	@Override
-	public CollectionModelHibernateResult<EventDB> readByTopic( String search,String order,
+	public CollectionModelHibernateResult<EventDB> readByTopic( String search,String startDateAndTime, String order,
 																			   SearchParameter searchParameter )
 	{
-		return new LoadAllEventsByTopic( emf,  search,order, searchParameter ).start( );
+		return new LoadAllEventsByTopic( emf, search,startDateAndTime,order,searchParameter).start( );
 	}
 
 	@Override public NoContentResult update( EventDB model )

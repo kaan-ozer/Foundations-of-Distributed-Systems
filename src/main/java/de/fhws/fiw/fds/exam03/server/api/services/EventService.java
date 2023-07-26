@@ -49,13 +49,14 @@ import static de.fhws.fiw.fds.sutton.server.api.queries.PagingBehaviorUsingOffse
 	@Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
 	public Response getAllEvents(
 			@DefaultValue("") @QueryParam("search") final String search,
+			@DefaultValue("") @QueryParam("date") final String startDateAndTime,
 			@DefaultValue( "+topic" ) @QueryParam( "order" ) final String order,
 			@DefaultValue("0") @QueryParam(QUERY_PARAM_OFFSET) int offset,
 			@DefaultValue(DEFAULT_PAGE_SIZE_STR) @QueryParam(QUERY_PARAM_SIZE) int size)
 	{
 
 		Response response = new GetAllEvents.Builder()
-				.setQuery(new QueryByTopic(search,order, offset, size))
+				.setQuery(new QueryByTopic(search,startDateAndTime,order, offset, size))
 				.setUriInfo(this.uriInfo)
 				.setRequest(this.request)
 				.setHttpServletRequest(this.httpServletRequest)
@@ -66,10 +67,11 @@ import static de.fhws.fiw.fds.sutton.server.api.queries.PagingBehaviorUsingOffse
 
 		Response.ResponseBuilder responseBuilder = Response.fromResponse(response);
 
+		Hyperlinks.addLink(uriInfo, responseBuilder, "/exam03/api/events?date={DATE}",
+				"getAllEventsByDate", "application/json");
 
 		Hyperlinks.addLink(uriInfo, responseBuilder, "/exam03/api/events?search={SEARCH}",
 				"getAllEventsBySearch", "application/json");
-
 
 		Hyperlinks.addLink(uriInfo, responseBuilder,
 				"/exam03/api/events?search=" + search + "&order=" + EventComparator.reverseSearchOrder( order ),
