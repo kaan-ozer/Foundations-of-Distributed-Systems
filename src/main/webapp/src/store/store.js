@@ -43,12 +43,17 @@ export const store = new Vuex.Store({
     },
     actions: {
 
-        async getAllEvents(context) {
+        async getAllEvents(context,search) {
             const dispatcherResponse = await network.getDispatcherState();
             const allLinks = parse(dispatcherResponse.headers.link);
-         /*   const url = allLinks['getAllEvents'].url.replace("{QUERY}", search);*/
+            let url = null;
 
-            const url = allLinks['getAllEvents'].url;
+            url = allLinks['getAllEventsBySearch'].url.replace("{SEARCH}", search);
+
+            if (!isNaN(search.charAt(0))) {
+                 url =  allLinks['getAllEventsByDate'].url.replace("{DATE}", search);
+            }
+
             await context.dispatch('loadPage', url);
         },
         async loadPage(context,url) {
