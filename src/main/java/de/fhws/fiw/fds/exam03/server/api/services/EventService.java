@@ -18,15 +18,18 @@ import de.fhws.fiw.fds.exam03.server.api.models.Event;
 import de.fhws.fiw.fds.exam03.server.api.queries.QueryByTopic;
 import de.fhws.fiw.fds.exam03.server.api.states.events.*;
 
+import de.fhws.fiw.fds.exam03.server.api.utils.EtagGenerator;
 import de.fhws.fiw.fds.exam03.server.database.utils.ResetDatabase;
 import de.fhws.fiw.fds.sutton.server.api.hyperlinks.Hyperlinks;
 import de.fhws.fiw.fds.sutton.server.api.services.AbstractService;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.CacheControl;
+import javax.ws.rs.core.EntityTag;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import static de.fhws.fiw.fds.exam03.server.api.utils.CacheControlHelper.cachePublicAndTenSeconds;
 import static de.fhws.fiw.fds.sutton.server.api.queries.PagingBehaviorUsingOffsetSize.*;
 
 @Path( "events" ) public class EventService extends AbstractService
@@ -80,12 +83,31 @@ import static de.fhws.fiw.fds.sutton.server.api.queries.PagingBehaviorUsingOffse
 
 
 
+		if(search.equals("") && startDateAndTime.equals("")) {
+
+			responseBuilder = Response.ok()
+				.cacheControl(cachePublicAndTenSeconds());
+
+			responseBuilder.entity(response.getEntity());
+
+			Response.ResponseBuilder finalResponseBuilder = responseBuilder;
+			response.getHeaders().forEach((name, values) -> {
+				for (Object value : values) {
+					finalResponseBuilder.header(name.toString(), value.toString());
+				}
+			});
+
+			return finalResponseBuilder.build();
+		}
+		else {
+			return responseBuilder.build();
+		}
 
 
-		return responseBuilder.build();
 
 
-		/*
+/*
+
 		final CacheControl cacheControl = new CacheControl();
         cacheControl.setPrivate(false);
         cacheControl.setMaxAge(10);
@@ -101,8 +123,7 @@ import static de.fhws.fiw.fds.sutton.server.api.queries.PagingBehaviorUsingOffse
         });
         Response finalResponse = responseBuilder.build();
 
-        return finalResponse;
-        */
+        return finalResponse;*/
 	}
 
 	@GET
@@ -112,19 +133,44 @@ import static de.fhws.fiw.fds.sutton.server.api.queries.PagingBehaviorUsingOffse
 	{
 
 
+		// Execute the GetSingleEvent operation and retrieve the response
+		Response response = new GetSingleEvent.Builder()
+				.setRequestedId(id)
+				.setUriInfo(this.uriInfo)
+				.setRequest(this.request)
+				.setHttpServletRequest(this.httpServletRequest)
+				.setContext(this.context)
+				.build()
+				.execute();
 
-		return
-				 new GetSingleEvent.Builder( )
-						.setRequestedId( id )
-						.setUriInfo( this.uriInfo )
-						.setRequest( this.request )
-						.setHttpServletRequest( this.httpServletRequest )
-						.setContext( this.context )
-						.build( )
-						.execute( );
+/*		// Check if the response is successful (status code 200)
+		if (response.getStatus() != Response.Status.OK.getStatusCode()) {
+			// Return the original response (error response)
+			return response;
+		}*/
 
+		// Retrieve the event from the response
+		Event event = (Event) response.getEntity();
 
+		// Generate an ETag for the event
+		final EntityTag entityTag = EtagGenerator.createEntityTag(event);
 
+		System.out.println("Entity TAG:" + entityTag);
+
+		// Check if the client's request headers contain an ETag that matches the generated ETag
+		final Response.ResponseBuilder builder = request.evaluatePreconditions(entityTag);
+
+		if (builder != null)
+		{
+			// If the ETag matches, return a "304 Not Modified" response
+			return Response.notModified().build();
+		}
+
+		// If the ETag does not match, return the event with a "200 OK" response, along with caching-related headers and the ETag
+		return Response.ok(event)
+				.cacheControl(cachePublicAndTenSeconds())
+				.tag(entityTag)
+				.build();
 
 	}
 
