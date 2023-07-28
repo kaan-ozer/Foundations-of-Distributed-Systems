@@ -40,7 +40,7 @@ export default {
 }
 
 .event{
-  font-size: 24pt;
+  font-size: 18pt;
   padding: 10px;
   background-color: #212529;
   color: white;

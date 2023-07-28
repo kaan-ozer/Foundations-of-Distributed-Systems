@@ -43,19 +43,37 @@ export const store = new Vuex.Store({
     },
     actions: {
 
-        async getAllEvents(context,search) {
-            const dispatcherResponse = await network.getDispatcherState();
-            const allLinks = parse(dispatcherResponse.headers.link);
-            let url = null;
+            async getAllEvents(context,payload) {
 
-            url = allLinks['getAllEventsBySearch'].url.replace("{SEARCH}", search);
+                const search = payload.searchKey;
+                const order = payload.orderKey;
 
-            if (!isNaN(search.charAt(0))) {
-                 url =  allLinks['getAllEventsByDate'].url.replace("{DATE}", search);
-            }
+                const dispatcherResponse = await network.getDispatcherState();
+                const allLinks = parse(dispatcherResponse.headers.link);
 
-            await context.dispatch('loadPage', url);
-        },
+                let url = null;
+
+
+                if (search === undefined && order === undefined) {
+                    url = allLinks['getAllEventsBySearchWithOrder'].url.replace("{SEARCH}", "");
+                    url = url.replace("topic%2C-topic%2Cdate%2C-date", "topic"); // Update the url with the new value
+                } else if(search === undefined && order !== undefined) {
+                    url = allLinks['getAllEventsBySearchWithOrder'].url.replace("{SEARCH}", "");
+                    url = url.replace("topic%2C-topic%2Cdate%2C-date", order); // Update the url with the new value
+                } else if (search !== undefined) {
+                    url = allLinks['getAllEventsBySearchWithOrder'].url.replace("{SEARCH}", search);
+                    url = url.replace("topic%2C-topic%2Cdate%2C-date", order); // Update the url with the new value
+                    if (!isNaN(search.charAt(0))) {
+                        url = allLinks['getAllEventsByDateWithOrder'].url.replace("{DATE}", search);
+                        url = url.replace("topic%2C-topic%2Cdate%2C-date", order); // Update the url with the new value
+                    }
+                }
+
+
+
+                console.log(search,order, url);
+                await context.dispatch('loadPage', url);
+            },
         async loadPage(context,url) {
             const getCollectionResponse = await network.getAllEventsState(url);
             const nextRelations = parse(getCollectionResponse.headers.link);
