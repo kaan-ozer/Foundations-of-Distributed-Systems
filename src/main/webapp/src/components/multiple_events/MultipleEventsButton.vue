@@ -10,10 +10,8 @@
         v-if="isNextPageAvailable"
         @click="nextPage()">Next page
     </button>
-    <button
-        class="btn btn-secondary createbutton"
-        v-if="isCreateAllowed">Create Project
-    </button>
+
+
 
   </div>
 </template>
@@ -30,9 +28,7 @@ export default {
     }
   },
   computed: {
-    isCreateAllowed() {
-      return this.$store.getters.isCreateAllowed
-    },
+
     isNextPageAvailable() {
       return this.$store.getters.isNextPageAvailable
     },
@@ -60,8 +56,6 @@ export default {
   margin-left: 20px;
 }
 
-.createbutton {
-  margin-right: 20px;
-}
+
 
 </style>

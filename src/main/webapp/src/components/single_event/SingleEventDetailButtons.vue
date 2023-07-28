@@ -1,20 +1,16 @@
 <template>
   <div class="singleeventbuttons">
-<!--    <EditStudentProjectButton/>
-    <DeleteStudentProjectButton/>-->
+
   </div>
 
 </template>
 
 <script>
-/*
-import EditStudentProjectButton from "@/components/studentproject/StudentProjectEditButton";
-import DeleteStudentProjectButton from "@/components/studentproject/StudentProjectDeleteButton";
-*/
+
 
 export default {
   name: "SingleEventDetailButtons",
-  components: {/*DeleteStudentProjectButton, EditStudentProjectButton*/}
+  components: {}
 }
 </script>
 

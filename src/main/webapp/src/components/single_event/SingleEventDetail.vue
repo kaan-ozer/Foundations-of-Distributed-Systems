@@ -5,36 +5,41 @@
         <h1>{{ selectedEvent.topicLong}}</h1>
       </div>
       <dl class="row">
-        <dt class="col-sm-3">institution</dt>
+        <dt class="col-sm-3">Topic Short</dt>
+        <dd class="col-sm-9">{{ selectedEvent.topicShort }}</dd>
+      </dl>
+      <hr>
+      <dl class="row">
+        <dt class="col-sm-3">Institution</dt>
         <dd class="col-sm-9">{{ selectedEvent.institution }}</dd>
       </dl>
       <hr>
       <dl class="row">
-        <dt class="col-sm-3">lecturer</dt>
+        <dt class="col-sm-3">Lecturer</dt>
         <dd class="col-sm-9">{{ selectedEvent.lecturer }}</dd>
       </dl>
       <hr>
       <dl class="row">
-        <dt class="col-sm-3">address</dt>
+        <dt class="col-sm-3">Address</dt>
         <dd class="col-sm-9">{{ selectedEvent.address }}</dd>
       </dl>
       <hr>
       <div class="row">
-        <dt class="col-sm-3">location</dt>
+        <dt class="col-sm-3">Location</dt>
         <div class="col-sm-9">
           {{ selectedEvent.location }}
         </div>
       </div>
       <hr>
       <div class="row">
-        <dt class="col-sm-3">startDateAndTime</dt>
+        <dt class="col-sm-3">Start Date and Time</dt>
         <div class="col-sm-9">
           {{ selectedEvent.startDateAndTime }}
         </div>
       </div>
       <hr>
       <div class="row">
-        <dt class="col-sm-3">endDateAndTime</dt>
+        <dt class="col-sm-3">End Date and Time</dt>
         <div class="col-sm-9">
           {{ selectedEvent.endDateAndTime }}
         </div>
