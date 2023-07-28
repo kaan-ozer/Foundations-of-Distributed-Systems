@@ -24,6 +24,9 @@ public interface EventRelTypes
 	String GET_ALL_EVENTS_BY_SEARCH = "getAllEventsBySearch";
 	String GET_ALL_EVENTS_BY_DATE = "getAllEventsByDate";
 
+	String GET_ALL_EVENTS_BY_SEARCH_WITH_ORDER = "getAllEventsBySearchWithOrder";
+	String GET_ALL_EVENTS_BY_DATE_WITH_ORDER = "getAllEventsByDateWithOrder";
+
 
 	String UPDATE_SINGLE_EVENT = "updateEvent";
 	String DELETE_SINGLE_EVENT = "deleteEvent";

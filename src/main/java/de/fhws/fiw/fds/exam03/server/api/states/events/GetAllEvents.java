@@ -32,11 +32,11 @@ public class GetAllEvents extends AbstractGetCollectionState<Event> {
     @Override protected void defineTransitionLinks( )
     {
 
-        addLink("/exam03/api/events?date={DATE}", "getAllEventsByDate",getAcceptRequestHeader());
-        addLink("/exam03/api/events?search={DATE}&order=topic,-topic,date,-date", "getAllEventsByDateWithOrder",getAcceptRequestHeader());
-
-        addLink("/exam03/api/events?search={SEARCH}", "getAllEventsBySearch",getAcceptRequestHeader());
-        addLink("/exam03/api/events?search={SEARCH}&order=topic,-topic,date,-date", "gtAllEventsBySearchWithOrder",getAcceptRequestHeader());
+        addLink( EventUri.REL_PATH, EventRelTypes.GET_ALL_EVENTS, getAcceptRequestHeader( ) );
+        addLink(EventUri.REL_PATH_BY_SEARCH,EventRelTypes.GET_ALL_EVENTS_BY_SEARCH,getAcceptRequestHeader());
+        addLink(EventUri.REL_PATH_BY_DATE,EventRelTypes.GET_ALL_EVENTS_BY_DATE,getAcceptRequestHeader());
+        addLink(EventUri.REL_PATH_BY_SEARCH_WITH_ORDER,EventRelTypes.GET_ALL_EVENTS_BY_SEARCH_WITH_ORDER,getAcceptRequestHeader());
+        addLink(EventUri.REL_PATH_BY_DATE_WITH_ORDER,EventRelTypes.GET_ALL_EVENTS_BY_DATE_WITH_ORDER,getAcceptRequestHeader());
     }
 
 

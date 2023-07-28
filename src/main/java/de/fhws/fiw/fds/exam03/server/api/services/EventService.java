@@ -31,6 +31,7 @@ import javax.ws.rs.core.Response;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static de.fhws.fiw.fds.exam03.server.api.utils.CacheControlHelper.cachePublicAndTenSeconds;
 import static de.fhws.fiw.fds.sutton.server.api.queries.PagingBehaviorUsingOffsetSize.*;
@@ -102,8 +103,12 @@ import static de.fhws.fiw.fds.sutton.server.api.queries.PagingBehaviorUsingOffse
 				.execute();
 
 
+
 		Event event = (Event) response.getEntity();
 
+		if (event == null) {
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
 
 		final EntityTag entityTag = EtagGenerator.createEntityTag(event);
 
@@ -138,15 +143,53 @@ import static de.fhws.fiw.fds.sutton.server.api.queries.PagingBehaviorUsingOffse
 	@PUT @Path( "{id: \\d+}" ) @Consumes( { MediaType.APPLICATION_JSON } )
 	public Response updateSingleEvent( @PathParam( "id" ) final long id, final Event personModel )
 	{
-		return new PutSingleEvent.Builder( ).setRequestedId( id )
-				.setModelToUpdate( personModel )
-				.setUriInfo( this.uriInfo )
-				.setRequest( this.request )
-				.setHttpServletRequest( this.httpServletRequest )
-				.setContext( this.context )
-				.build( )
-				.execute( );
+
+		Response response = new GetSingleEvent.Builder()
+				.setRequestedId(id)
+				.setUriInfo(this.uriInfo)
+				.setRequest(this.request)
+				.setHttpServletRequest(this.httpServletRequest)
+				.setContext(this.context)
+				.build()
+				.execute();
+
+
+		Event event = (Event) response.getEntity();
+
+
+		if (event == null) {
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+
+
+		if (id != event.getId()) {
+			System.out.println(event.getId() + "eventıd" + id + "id normal");
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
+
+
+		final EntityTag entityTag = EtagGenerator.createEntityTag(event);
+
+		System.out.println("Entity TAG:" + entityTag);
+
+
+		Response.ResponseBuilder builder = request.evaluatePreconditions(entityTag);
+
+		if (builder != null) {
+
+			return Response.status(Response.Status.PRECONDITION_FAILED).build();
+		} else {
+			return new PutSingleEvent.Builder( ).setRequestedId( id )
+					.setModelToUpdate( personModel )
+					.setUriInfo( this.uriInfo )
+					.setRequest( this.request )
+					.setHttpServletRequest( this.httpServletRequest )
+					.setContext( this.context )
+					.build( )
+					.execute( );
+		}
 	}
+
 
 	@DELETE @Path( "{id: \\d+}" ) @Consumes( { MediaType.APPLICATION_JSON } )
 	public Response deleteSingleEvent( @PathParam( "id" ) final long id )

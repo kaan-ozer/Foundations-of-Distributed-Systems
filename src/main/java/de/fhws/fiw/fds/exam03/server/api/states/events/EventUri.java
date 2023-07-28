@@ -20,16 +20,15 @@ import de.fhws.fiw.fds.exam03.server.Start;
 
 public interface EventUri
 {
-	String REVERSE_ORDER_TOPIC = "&order=-topic";
-	String REVERSE_ORDER_DATE = "&order=-date";
+	String ORDER_ELEMENT = "&order=topic,-topic,date,-date";
 	String SEARCH_ELEMENT= "?search={SEARCH}";
 	String DATE_ELEMENT= "?date={DATE}";
 	String PATH_ELEMENT = "events";
 	String REL_PATH = Start.CONTEXT_PATH + "/api/" + PATH_ELEMENT;
 	String REL_PATH_BY_SEARCH = REL_PATH + SEARCH_ELEMENT;
 	String REL_PATH_BY_DATE = REL_PATH + DATE_ELEMENT;
-	String REL_PATH_BY_SEARCH_REVERSE_ORDER_TOPIC = REL_PATH + REVERSE_ORDER_TOPIC;
-	String REL_PATH_BY_SEARCH_REVERSE_ORDER_DATE = REL_PATH + REVERSE_ORDER_DATE;
+	String REL_PATH_BY_SEARCH_WITH_ORDER = REL_PATH + SEARCH_ELEMENT + ORDER_ELEMENT;
+	String REL_PATH_BY_DATE_WITH_ORDER = REL_PATH + DATE_ELEMENT + ORDER_ELEMENT;
 	String REL_PATH_ID = REL_PATH + "/{id}";
 }
 
