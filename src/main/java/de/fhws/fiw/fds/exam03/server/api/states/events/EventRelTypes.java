@@ -16,9 +16,6 @@
 
 package de.fhws.fiw.fds.exam03.server.api.states.events;
 
-import de.fhws.fiw.fds.exam03.server.api.services.EventComparator;
-import de.fhws.fiw.fds.sutton.server.api.hyperlinks.Hyperlinks;
-
 public interface EventRelTypes
 {
 	String CREATE_EVENT = "createEvent";

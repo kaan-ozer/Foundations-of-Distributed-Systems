@@ -52,15 +52,14 @@ public class LoadAllEventsByTopic
 
         Predicate finalPredicate = topicSearchPredicate;
 
-
         final Predicate matchDate = cb.like(cb.lower(root.get("startDateAndTime")), startDateAndTime + "%");
-        finalPredicate = cb.and(topicSearchPredicate, matchDate);
 
+         finalPredicate = cb.and(topicSearchPredicate, matchDate);
 
         final CriteriaQuery<EventDB> filterByNames = cq.select(root).where(finalPredicate);
 
         // Sorting logic based on the order parameter
-        if (order.equals("+topic")) {
+        if (order.equals("topic")) {
             filterByNames.orderBy(cb.asc(cb.function("LOWER", String.class, root.get("topicLong"))));
         } else if (order.equals("-topic")) {
             filterByNames.orderBy(cb.desc(cb.function("LOWER", String.class, root.get("topicLong"))));
@@ -68,12 +67,19 @@ public class LoadAllEventsByTopic
 
         TypedQuery<EventDB> query = em.createQuery(filterByNames);
 
+
         int totalResults = em.createQuery(filterByNames).getResultList().size();
 
         query.setFirstResult(searchParameter.getOffset());
         query.setMaxResults(searchParameter.getSize());
 
         List<EventDB> resultList = query.getResultList();
+
+        if (order.equals("date")) {
+            resultList.sort(Comparator.comparing(e -> LocalDate.parse(e.getStartDateAndTime(), DateTimeFormatter.ISO_LOCAL_DATE_TIME)));
+        } else if(order.equals("-date")) {
+            resultList.sort(Comparator.comparing(e -> LocalDate.parse(e.getStartDateAndTime(), DateTimeFormatter.ISO_LOCAL_DATE_TIME), Comparator.reverseOrder()));
+        }
 
         CollectionModelHibernateResult<EventDB> returnValue = new CollectionModelHibernateResult<>(resultList);
         returnValue.setTotalNumberOfResult(totalResults);

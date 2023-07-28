@@ -29,6 +29,9 @@ import javax.ws.rs.core.EntityTag;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import java.util.List;
+import java.util.Map;
+
 import static de.fhws.fiw.fds.exam03.server.api.utils.CacheControlHelper.cachePublicAndTenSeconds;
 import static de.fhws.fiw.fds.sutton.server.api.queries.PagingBehaviorUsingOffsetSize.*;
 
@@ -59,7 +62,7 @@ import static de.fhws.fiw.fds.sutton.server.api.queries.PagingBehaviorUsingOffse
 	{
 
 		Response response = new GetAllEvents.Builder()
-				.setQuery(new QueryByTopic(search,startDateAndTime,order, offset, size))
+				.setQuery(new QueryByTopic(search, startDateAndTime, order, offset, size))
 				.setUriInfo(this.uriInfo)
 				.setRequest(this.request)
 				.setHttpServletRequest(this.httpServletRequest)
@@ -67,64 +70,20 @@ import static de.fhws.fiw.fds.sutton.server.api.queries.PagingBehaviorUsingOffse
 				.build()
 				.execute();
 
-
 		Response.ResponseBuilder responseBuilder = Response.fromResponse(response);
 
-		Hyperlinks.addLink(uriInfo, responseBuilder, "/exam03/api/events?date={DATE}",
-				"getAllEventsByDate", "application/json");
 
-		Hyperlinks.addLink(uriInfo, responseBuilder, "/exam03/api/events?search={SEARCH}",
-				"getAllEventsBySearch", "application/json");
+		if (search.isEmpty() && startDateAndTime.isEmpty()) {
 
-		Hyperlinks.addLink(uriInfo, responseBuilder,
-				"/exam03/api/events?search=" + search + "&order=" + EventComparator.reverseSearchOrder( order ),
-				"reverseSearchOrderBySearch", "application/json");
+			responseBuilder.cacheControl(cachePublicAndTenSeconds());
 
-
-
-
-		if(search.equals("") && startDateAndTime.equals("")) {
-
-			responseBuilder = Response.ok()
-				.cacheControl(cachePublicAndTenSeconds());
-
-			responseBuilder.entity(response.getEntity());
-
-			Response.ResponseBuilder finalResponseBuilder = responseBuilder;
-			response.getHeaders().forEach((name, values) -> {
-				for (Object value : values) {
-					finalResponseBuilder.header(name.toString(), value.toString());
-				}
-			});
-
-			return finalResponseBuilder.build();
-		}
-		else {
-			return responseBuilder.build();
 		}
 
 
+		return responseBuilder.build();
 
+		}
 
-/*
-
-		final CacheControl cacheControl = new CacheControl();
-        cacheControl.setPrivate(false);
-        cacheControl.setMaxAge(10);
-        cacheControl.setNoTransform(false);
-
-        Response.ResponseBuilder responseBuilder = Response.ok()
-                .cacheControl(cacheControl);
-        responseBuilder.entity(response.getEntity());
-        response.getHeaders().forEach((name, values) -> {
-            for (Object value : values) {
-                responseBuilder.header(name.toString(), value.toString());
-            }
-        });
-        Response finalResponse = responseBuilder.build();
-
-        return finalResponse;*/
-	}
 
 	@GET
 	@Path( "{id: \\d+}" )
@@ -133,7 +92,6 @@ import static de.fhws.fiw.fds.sutton.server.api.queries.PagingBehaviorUsingOffse
 	{
 
 
-		// Execute the GetSingleEvent operation and retrieve the response
 		Response response = new GetSingleEvent.Builder()
 				.setRequestedId(id)
 				.setUriInfo(this.uriInfo)
@@ -143,34 +101,37 @@ import static de.fhws.fiw.fds.sutton.server.api.queries.PagingBehaviorUsingOffse
 				.build()
 				.execute();
 
-/*		// Check if the response is successful (status code 200)
-		if (response.getStatus() != Response.Status.OK.getStatusCode()) {
-			// Return the original response (error response)
-			return response;
-		}*/
 
-		// Retrieve the event from the response
 		Event event = (Event) response.getEntity();
 
-		// Generate an ETag for the event
+
 		final EntityTag entityTag = EtagGenerator.createEntityTag(event);
 
 		System.out.println("Entity TAG:" + entityTag);
 
-		// Check if the client's request headers contain an ETag that matches the generated ETag
-		final Response.ResponseBuilder builder = request.evaluatePreconditions(entityTag);
+		Response.ResponseBuilder builder = request.evaluatePreconditions(entityTag);
 
-		if (builder != null)
+		if (builder == null)
 		{
-			// If the ETag matches, return a "304 Not Modified" response
-			return Response.notModified().build();
+
+			builder = Response.ok(event)
+					.cacheControl(cachePublicAndTenSeconds())
+					.tag(entityTag);
+
+
+			for (Map.Entry<String, List<Object>> entry : response.getHeaders().entrySet())
+			{
+				String name = entry.getKey();
+				List<Object> values = entry.getValue();
+				for (Object value : values)
+				{
+					builder.header(name, value);
+				}
+			}
 		}
 
-		// If the ETag does not match, return the event with a "200 OK" response, along with caching-related headers and the ETag
-		return Response.ok(event)
-				.cacheControl(cachePublicAndTenSeconds())
-				.tag(entityTag)
-				.build();
+
+		return builder.build();
 
 	}
 

@@ -19,7 +19,7 @@ public class CorsFilter implements Filter {
         httpServletResponse.setHeader("Access-Control-Allow-Origin", "http://localhost:4545");
         httpServletResponse.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
         httpServletResponse.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Link");
-        httpServletResponse.setHeader("Access-Control-Expose-Headers", "Link");
+        httpServletResponse.setHeader("Access-Control-Expose-Headers", "Link, ETag");
         chain.doFilter(request, response);
     }
 
