@@ -133,7 +133,7 @@ public class EventDaoAdapter implements EventDao
 		}
 	}
 
-		// Result goes to state class
+
 	private CollectionModelResult<Event> createResult( CollectionModelHibernateResult<EventDB> result )
 	{
 		if ( result.hasError( ) )

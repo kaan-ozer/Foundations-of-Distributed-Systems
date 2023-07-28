@@ -29,6 +29,7 @@ public class GetSingleEvent extends AbstractGetState<Event>
                 this.requestedId );
         addLink( EventUri.REL_PATH_ID, EventRelTypes.DELETE_SINGLE_EVENT, getAcceptRequestHeader( ),
                 this.requestedId );
+        addLink( EventUri.REL_PATH, EventRelTypes.GET_ALL_EVENTS, getAcceptRequestHeader( ) );
 
     }
 
