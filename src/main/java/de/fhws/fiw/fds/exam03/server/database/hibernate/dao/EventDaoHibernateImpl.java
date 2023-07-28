@@ -61,13 +61,20 @@ public class EventDaoHibernateImpl implements EventDaoHibernate
 		int hour = random.nextInt(24);
 		int minute = random.nextInt(60);
 
+		String formattedMonth = String.format("%02d", month);
+		String formattedDay = String.format("%02d", day);
 		String formattedHour = String.format("%02d", hour);
+		String formattedMinute = String.format("%02d", minute);
 
-		returnValue.setStartDateAndTime(year + "-" + month + "-" + day + "T" + formattedHour + ":" + minute + ":00");
+		returnValue.setStartDateAndTime(year + "-" + formattedMonth + "-" + formattedDay + "T" + formattedHour + ":" + formattedMinute + ":00");
 
 
 		int daysToAdd = random.nextInt(5) + 1;
-		returnValue.setEndDateAndTime(year + "-" + month + "-" + (day + daysToAdd) + "T" + formattedHour + ":" + minute + ":00");
+		int endDateDay =  (day + daysToAdd);
+		String formattedEndDateDay = String.format("%02d", endDateDay);
+
+
+		returnValue.setEndDateAndTime(year + "-" + formattedMonth + "-" + formattedEndDateDay + "T" + formattedHour + ":" + formattedMinute + ":00");
 
 		index = random.nextInt(institutions.length);
 		returnValue.setInstitution(institutions[index]);
