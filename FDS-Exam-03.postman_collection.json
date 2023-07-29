@@ -271,9 +271,30 @@
 			"name": "Update last created event",
 			"event": [
 				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.sendRequest(\"http://localhost:8080/exam03/api/events/1\", function (err, response) {\r",
+							"  \r",
+							"\r",
+							"     const ETagValue = response.headers.get(\"ETag\").replace(/^\"|\"$/g, \"\");\r",
+							"     pm.request.headers.add({ \"If-Match\": ETagValue });\r",
+							"\r",
+							"     console.log(ETagValue);\r",
+							"\r",
+							"    \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
 					"listen": "test",
 					"script": {
 						"exec": [
+							"  ",
+							" ",
+							"",
 							"pm.test('Status code no content', () => {",
 							"    pm.response.to.have.status(204);",
 							"});",
@@ -303,12 +324,13 @@
 					{
 						"key": "If-Match",
 						"value": "\"18DD78FA8AFB3771E7C3842E14A492D9\"",
-						"type": "text"
+						"type": "text",
+						"disabled": true
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"address\": \"789 Elm Street\",\n    \"endDateAndTime\": \"2024-9-9T0:45:00\",\n    \"id\": 1,\n    \"institution\": \"University XYZ\",\n    \"lecturer\": \"Dr. Brown\",\n    \"location\": \"City A\",\n    \"self\": {\n        \"href\": \"http://localhost/exam03/api/events/1\",\n        \"rel\": \"self\",\n        \"type\": \"application/json\"\n    },\n    \"startDateAndTime\": \"2024-9-6T0:45:00\",\n    \"topicLong\": \"Physssssafasics\",\n    \"topicShort\": \"Economics\"\n}",
+					"raw": "{\n    \"address\": \"789 Elm Street\",\n    \"endDateAndTime\": \"2023-10-25T20:14:00\",\n    \"id\": 1,\n    \"institution\": \"University XYZ\",\n    \"lecturer\": \"Dr. Brown\",\n    \"location\": \"City A\",\n    \"self\": {\n        \"href\": \"http://localhost/exam03/api/events/1\",\n        \"rel\": \"self\",\n        \"type\": \"application/json\"\n    },\n    \"startDateAndTime\": \"2024-02-20T16:17:00\",\n    \"topicLong\": \"Physics\",\n    \"topicShort\": \"Economics\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
