@@ -100,10 +100,10 @@ public class EventDaoHibernateImpl implements EventDaoHibernate
 	}
 
 	@Override
-	public CollectionModelHibernateResult<EventDB> readByTopic( String search,String startDateAndTime, String order,
+	public CollectionModelHibernateResult<EventDB> readByTopicAndDate( String search,String startDateAndTime, String order,
 																			   SearchParameter searchParameter )
 	{
-		return new LoadAllEventsByTopic( emf, search,startDateAndTime,order,searchParameter).start( );
+		return new LoadAllEventsByTopicAndDate( emf, search,startDateAndTime,order,searchParameter).start( );
 	}
 
 	@Override public NoContentResult update( EventDB model )

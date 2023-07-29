@@ -8,13 +8,12 @@ import de.fhws.fiw.fds.sutton.server.api.queries.AbstractQuery;
 import de.fhws.fiw.fds.sutton.server.database.DatabaseException;
 import de.fhws.fiw.fds.sutton.server.database.SearchParameter;
 
-public class QueryByTopic extends AbstractQuery<Event>  {
+public class QueryByTopicAndDate extends AbstractQuery<Event>  {
     private String search;
-
     private String startDateAndTime;
     private String order;
 
-    public QueryByTopic(String search,String startDateAndTime,String order, int offset, int size )
+    public QueryByTopicAndDate(String search, String startDateAndTime, String order, int offset, int size )
     {
         this.search = search;
         this.startDateAndTime = startDateAndTime;
@@ -49,9 +48,7 @@ public class QueryByTopic extends AbstractQuery<Event>  {
 
     protected CollectionModelResult<Event> doExecuteQuery(SearchParameter searchParameter ) throws DatabaseException
     {
-
-
-        return DaoFactory.getInstance( ).getEventDao( ).readByTopic(
+        return DaoFactory.getInstance( ).getEventDao( ).readByTopicAndDate(
                 this.search,this.startDateAndTime,this.order,
                 searchParameter );
     }

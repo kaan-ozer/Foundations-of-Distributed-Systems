@@ -57,10 +57,10 @@ public class EventDaoAdapter implements EventDao
 		return createResult( this.dao.readById( id ) );
 	}
 
-	@Override public CollectionModelResult<Event> readByTopic( String search ,String startDateAndTime, String order,
+	@Override public CollectionModelResult<Event> readByTopicAndDate( String search ,String startDateAndTime, String order,
 																	SearchParameter searchParameter )
 	{
-		return createResult( this.dao.readByTopic(  search,startDateAndTime, order, searchParameter ));
+		return createResult( this.dao.readByTopicAndDate(  search,startDateAndTime, order, searchParameter ));
 	}
 
 

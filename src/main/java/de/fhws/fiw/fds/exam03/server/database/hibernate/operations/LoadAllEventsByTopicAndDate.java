@@ -11,14 +11,11 @@ import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class LoadAllEventsByTopic
+public class LoadAllEventsByTopicAndDate
         extends AbstractDatabaseOperation<EventDB, CollectionModelHibernateResult<EventDB>>
 {
     private final String search;
@@ -26,8 +23,8 @@ public class LoadAllEventsByTopic
     private final String order;
     private final SearchParameter searchParameter;
 
-    public LoadAllEventsByTopic(EntityManagerFactory emf, String search,  String startDateAndTime, String order,
-                                      SearchParameter searchParameter) {
+    public LoadAllEventsByTopicAndDate(EntityManagerFactory emf, String search, String startDateAndTime, String order,
+                                       SearchParameter searchParameter) {
         super(emf);
         this.search = search.toLowerCase();
         this.startDateAndTime = startDateAndTime;
@@ -45,6 +42,7 @@ public class LoadAllEventsByTopic
         final CriteriaQuery<EventDB> cq = cb.createQuery(EventDB.class);
         final Root<EventDB> root = cq.from(EventDB.class);
 
+
         final String searchKeyword = this.search.toLowerCase();
         final Predicate matchTopicShort = cb.like(cb.lower(root.get("topicShort")), searchKeyword + "%");
         final Predicate matchTopicLong = cb.like(cb.lower(root.get("topicLong")), searchKeyword + "%");
@@ -58,7 +56,7 @@ public class LoadAllEventsByTopic
 
         final CriteriaQuery<EventDB> filterByNames = cq.select(root).where(finalPredicate);
 
-        // Sorting logic based on the order parameter
+        /*case-sensitivity*/
         if (order.equals("topic")) {
             filterByNames.orderBy(cb.asc(cb.function("LOWER", String.class, root.get("topicLong"))));
         } else if (order.equals("-topic")) {
@@ -76,9 +74,11 @@ public class LoadAllEventsByTopic
         List<EventDB> resultList = query.getResultList();
 
         if (order.equals("date")) {
-            resultList.sort(Comparator.comparing(e -> LocalDate.parse(e.getStartDateAndTime(), DateTimeFormatter.ISO_LOCAL_DATE_TIME)));
+            resultList.sort(Comparator.comparing(e -> LocalDate.parse(e.getStartDateAndTime(),
+                    DateTimeFormatter.ISO_LOCAL_DATE_TIME)));
         } else if(order.equals("-date")) {
-            resultList.sort(Comparator.comparing(e -> LocalDate.parse(e.getStartDateAndTime(), DateTimeFormatter.ISO_LOCAL_DATE_TIME), Comparator.reverseOrder()));
+            resultList.sort(Comparator.comparing(e -> LocalDate.parse(e.getStartDateAndTime(),
+                    DateTimeFormatter.ISO_LOCAL_DATE_TIME), Comparator.reverseOrder()));
         }
 
         CollectionModelHibernateResult<EventDB> returnValue = new CollectionModelHibernateResult<>(resultList);
