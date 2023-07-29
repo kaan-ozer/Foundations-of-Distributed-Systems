@@ -1,10 +1,11 @@
 {
 	"info": {
-		"_postman_id": "779b76b7-41cc-4bbf-80a5-41792f46ad97",
+		"_postman_id": "fa34899f-9763-4abd-aeba-8278e00f921a",
 		"name": "FDS-Exam-03",
-		"description": "# 🧪 Get started here\n\nThis template helps ensure your API continues to work as expected after updates or changes. It contains sample requests for a series of tests that validate different aspects of an API, including:\n\n1. **Status code verification:** We'll check if the API returns the expected status codes for various requests, ensuring reliability and proper error handling.\n2. **JSON schema verification:** We'll make sure the JSON response conforms to a specified JSON Schema, ensuring API contracts are honored.\n3. **Response time verification:** We'll verify that the API's response time is within the acceptable range, providing a smooth user experience and optimizing performance.\n4. **Response body verification:** We'll validate the structure and content of the response body for accuracy, ensuring the integrity of the data and preventing potential issues downstream.\n5. **Header verification:** We'll confirm the presence and correct values of specific headers in the response, enabling secure and well-structured communication between your app and its users.\n    \n\n## 🔖 **How to use this template**\n\n**Step 1:** Send the sample requests and view the response and test results.\n\n**Step 2:** Replace the sample request URLs with your desired API endpoints.\n\n**Step 3:** Customize the tests in the \"Tests\" tab if needed. Don't forget to save your changes.\n\n**Step 4:** Run the collection by selecting \"Run\".\n\n<img src=\"https://content.pstmn.io/666cfa65-6e00-4308-871b-f831128bc0ac/Y29sbGVjdGlvbi1ydW5uZXItYnV0dG9uLmpwZWc=\" width=\"246\" height=\"102\">\n\n### ℹ️ Resources\n\n[Scripting in Postman](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/)\n\n[Test script examples](https://learning.postman.com/docs/writing-scripts/script-references/test-examples/)\n\n[Postman Sandbox API reference](https://learning.postman.com/docs/sending-requests/grpc/postman-sandbox-api/#writing-assertions)\n\n[Using the Collection Runner](https://learning.postman.com/docs/collections/running-collections/intro-to-collection-runs/)",
+		"description": "# 🧪 Get started here\n\nThis template helps ensure your API continues to work as expected after updates or changes. It contains sample requests for a series of tests that validate different aspects of an API, including:\n\n1. **Status code verification:** We'll check if the API returns the expected status codes for various requests, ensuring reliability and proper error handling.\n2. **JSON schema verification:** We'll make sure the JSON response conforms to a specified JSON Schema, ensuring API contracts are honored.\n3. **Response time verification:** We'll verify that the API's response time is within the acceptable range, providing a smooth user experience and optimizing performance.\n4. **Response body verification:** We'll validate the structure and content of the response body for accuracy, ensuring the integrity of the data and preventing potential issues downstream.\n5. **Header verification:** We'll confirm the presence and correct values of specific headers in the response, enabling secure and well-structured communication between your app and its users.\n    \n\n## 🔖 **How to use this template**\n\n**Step 1:** Send the sample requests and view the response and test results.\n\n**Step 2:** Replace the sample request URLs with your desired API endpoints.\n\n**Step 3:** Customize the tests in the \"Tests\" tab if needed. Don't forget to save your changes.\n\n**Step 4:** Run the collection by selecting \"Run\".\n\n<img src=\"https://content.pstmn.io/666cfa65-6e00-4308-871b-f831128bc0ac/Y29sbGVjdGlvbi1ydW5uZXItYnV0dG9uLmpwZWc=\" width=\"246\" height=\"102\">\n\n### ℹ️ Resources\n\n[Scripting in Postman]()\n\n[Test script examples]()\n\n[Postman Sandbox API reference]()\n\n[Using the Collection Runner]()",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "15807395"
+		"_exporter_id": "26570335",
+		"_collection_link": "https://universal-star-927552.postman.co/workspace/My-Workspace~88e69ada-e13d-4d31-85e4-42ed0483c772/collection/26570335-fa34899f-9763-4abd-aeba-8278e00f921a?action=share&creator=26570335&source=collection_link"
 	},
 	"item": [
 		{
@@ -18,10 +19,46 @@
 							"    pm.response.to.have.status(200);",
 							"});",
 							"",
+							"",
 							"pm.test(\"Verify response headers have expected values\", function () {",
 							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
 							"    pm.expect(pm.response.headers.get(\"Content-Length\")).to.exist;",
-							"    pm.expect(pm.response.headers.get(\"Link\")).to.include(\"createEvent\");",
+							" ",
+							"   const allHeaders = pm.response.headers.all();",
+							"",
+							"    for (const header of allHeaders) {",
+							"        if (header.key.toLowerCase() === \"link\") {",
+							"            if (header.value.includes(\"createEvent\")) {",
+							"                createEvent = true;",
+							"            }",
+							"             if (header.value.includes(\"self\")) {",
+							"                self = true;",
+							"            }",
+							"             if (header.value.includes(\"next\")) {",
+							"                next = true;",
+							"            }",
+							"            if (header.value.includes(\"getAllEventsBySearch\")) {",
+							"                getAllEventsBySearch = true;",
+							"            }",
+							"            if (header.value.includes(\"getAllEventsByDate\")) {",
+							"                getAllEventsByDate = true;",
+							"            } ",
+							"            if (header.value.includes(\"getAllEventsBySearchWithOrder\")) {",
+							"                getAllEventsBySearchWithOrder = true;",
+							"            }",
+							"            if (header.value.includes(\"getAllEventsByDateWithOrder\")) {",
+							"                getAllEventsByDateWithOrder = true;",
+							"            }",
+							"        }   ",
+							"    }",
+							"pm.expect(createEvent).to.be.true;",
+							"pm.expect(self).to.be.true;",
+							"pm.expect(next).to.be.true;",
+							"pm.expect(getAllEventsBySearch).to.be.true;",
+							"pm.expect(getAllEventsByDate).to.be.true;",
+							"pm.expect(getAllEventsBySearchWithOrder).to.be.true;",
+							"pm.expect(getAllEventsByDateWithOrder).to.be.true;",
+							"",
 							"});",
 							"",
 							"pm.test(\"Returns an event object\", () => {",
@@ -59,9 +96,23 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}",
+					"raw": "http://localhost:8080/exam03/api/events",
+					"protocol": "http",
 					"host": [
-						"{{baseUrl}}"
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"exam03",
+						"api",
+						"events"
+					],
+					"query": [
+						{
+							"key": "If-None-Match",
+							"value": "\"FE786FBB85B50729F5467452E73509AA\"",
+							"disabled": true
+						}
 					]
 				},
 				"description": "The test on this request asserts that the reponse has a \"200 OK\" status.\n\nYou can check for any HTTP status code using the same mechanism, for example `pm.response.to.have.status(403)` if your API should return an \"Unauthorized\" response."
@@ -82,7 +133,35 @@
 							"pm.test(\"Verify response headers have expected values\", function () {",
 							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
 							"    pm.expect(pm.response.headers.get(\"Content-Length\")).to.exist;",
-							"    pm.expect(pm.response.headers.get(\"Link\")).to.include(\"deleteEvent\");",
+							"    pm.expect(pm.response.headers.get(\"ETag\")).to.exist;",
+							"        pm.expect(pm.response.headers.get(\"Cache-Control\")).to.exist;",
+							"",
+							"    const allHeaders = pm.response.headers.all();",
+							"",
+							"    for (const header of allHeaders) {",
+							"        if (header.key.toLowerCase() === \"link\") {",
+							"         ",
+							"             if (header.value.includes(\"self\")) {",
+							"                self = true;",
+							"            }",
+							"            if (header.value.includes(\"updateEvent\")) {",
+							"                updateEvent = true;",
+							"            }",
+							"            if (header.value.includes(\"deleteEvent\")) {",
+							"                deleteEvent = true;",
+							"            } ",
+							"            if (header.value.includes(\"getAllEvents\")) {",
+							"                getAllEvents = true;",
+							"            }",
+							"         ",
+							"        }   ",
+							"    }",
+							" ",
+							"pm.expect(self).to.be.true;",
+							"pm.expect(updateEvent).to.be.true;",
+							"pm.expect(deleteEvent).to.be.true;",
+							"pm.expect(getAllEvents).to.be.true;",
+							"",
 							"});"
 						],
 						"type": "text/javascript"
@@ -99,9 +178,24 @@
 					}
 				],
 				"url": {
-					"raw": "{{first-event-url}}",
+					"raw": "http://localhost:8080/exam03/api/events/1",
+					"protocol": "http",
 					"host": [
-						"{{first-event-url}}"
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"exam03",
+						"api",
+						"events",
+						"1"
+					],
+					"query": [
+						{
+							"key": "If-None-Match",
+							"value": "\"FE786FBB85B50729F5467452E73509AA\"",
+							"disabled": true
+						}
 					]
 				}
 			},
@@ -123,7 +217,7 @@
 							"});",
 							"",
 							"pm.test(\"Verify response headers have expected values\", function () {",
-							"    pm.expect(pm.response.headers.get(\"Location\")).to.include(\"http://localhost:8080/sev/api/events/\");",
+							"    pm.expect(pm.response.headers.get(\"Location\")).to.include(\"http://localhost:8080/exam03/api/events/\");",
 							"    pm.expect(pm.response.headers.get(\"Content-Length\")).to.exist;",
 							"});",
 							"",
@@ -157,9 +251,16 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUrl}}",
+					"raw": "http://localhost:8080/exam03/api/events",
+					"protocol": "http",
 					"host": [
-						"{{baseUrl}}"
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"exam03",
+						"api",
+						"events"
 					]
 				},
 				"description": "This request has a test using Postman's built-in support for JSON Schema verification to ensure that the response data matches the expected shape.\n\nSchema validation can be used to verify your API returns data in the right format, without worrying about the exact values. This might be helpful when testing various inputs for a consistent output format.\n\nLearn more about JSON Schema at [https://json-schema.org](https://json-schema.org/.)."
@@ -198,11 +299,16 @@
 						"key": "Content-Type",
 						"value": "application/json",
 						"type": "text"
+					},
+					{
+						"key": "If-Match",
+						"value": "\"18DD78FA8AFB3771E7C3842E14A492D9\"",
+						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n        \"address\": \"Sanderheinrichsleitenweg 20, 97074 Würzburg\",\n        \"endDateAndTime\": \"2023-06-17T15:15:00\",\n        \"institution\": \"Stanford University\",\n        \"lecturer\": \"Andrew Ng\",\n        \"id\" : {{last-event-id}},\n        \"location\": \"Lecture hall H.1.1\",\n        \"startDateAndTime\": \"2023-06-17T13:15:00\",\n        \"topicLong\": \"Introduction to the Foundations of Artificial Intelligence\",\n        \"topicShort\": \"Intro to AI\"\n    }",
+					"raw": "{\n    \"address\": \"789 Elm Street\",\n    \"endDateAndTime\": \"2024-9-9T0:45:00\",\n    \"id\": 1,\n    \"institution\": \"University XYZ\",\n    \"lecturer\": \"Dr. Brown\",\n    \"location\": \"City A\",\n    \"self\": {\n        \"href\": \"http://localhost/exam03/api/events/1\",\n        \"rel\": \"self\",\n        \"type\": \"application/json\"\n    },\n    \"startDateAndTime\": \"2024-9-6T0:45:00\",\n    \"topicLong\": \"Physssssafasics\",\n    \"topicShort\": \"Economics\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -210,9 +316,17 @@
 					}
 				},
 				"url": {
-					"raw": "{{last-event-url}}",
+					"raw": "http://localhost:80/exam03/api/events/1",
+					"protocol": "http",
 					"host": [
-						"{{last-event-url}}"
+						"localhost"
+					],
+					"port": "80",
+					"path": [
+						"exam03",
+						"api",
+						"events",
+						"1"
 					]
 				},
 				"description": "This request uses tests to verify both the structure (existence and type of individual properties) and exact values of the response data.\n\nUse `pm.expect(subject)` to wrap test subjects, and [Chai](https://www.chaijs.com/api/bdd/) for assertions."
@@ -247,9 +361,17 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{last-event-url}}",
+					"raw": "http://localhost:80/exam03/api/events/1",
+					"protocol": "http",
 					"host": [
-						"{{last-event-url}}"
+						"localhost"
+					],
+					"port": "80",
+					"path": [
+						"exam03",
+						"api",
+						"events",
+						"1"
 					]
 				}
 			},
