@@ -56,7 +56,7 @@ public class LoadAllEventsByTopicAndDate
 
         final CriteriaQuery<EventDB> filterByNames = cq.select(root).where(finalPredicate);
 
-        /*case-sensitivity*/
+
         if (order.equals("topic")) {
             filterByNames.orderBy(cb.asc(cb.function("LOWER", String.class, root.get("topicLong"))));
         } else if (order.equals("-topic")) {

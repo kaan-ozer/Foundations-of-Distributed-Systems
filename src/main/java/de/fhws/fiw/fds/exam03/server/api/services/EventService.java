@@ -75,11 +75,8 @@ import static de.fhws.fiw.fds.sutton.server.api.queries.PagingBehaviorUsingOffse
 
 		if (search.isEmpty() && startDateAndTime.isEmpty()) {
 
-			// If we are at home page, set cache control to make the response cacheable for ten seconds
 			responseBuilder.cacheControl(cachePublicAndTenSeconds());
-
 		}
-
 
 		return responseBuilder.build();
 
@@ -102,32 +99,23 @@ import static de.fhws.fiw.fds.sutton.server.api.queries.PagingBehaviorUsingOffse
 				.build()
 				.execute();
 
-
-		// Retrieve the event object
 		Event event = (Event) response.getEntity();
 
-		// If the event is not found 404
+
 		if (event == null) {
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 
-		// Generate an EntityTag
 
 		final EntityTag entityTag = EtagGenerator.createEntityTag(event);
 
-
-
-
-		// Check if the request's If-None-Match header matches the generated EntityTag
 		Response.ResponseBuilder builder = request.evaluatePreconditions(entityTag);
-
 
 		Response.ResponseBuilder responseBuilder = Response.fromResponse(response);
 
 
 		if (builder == null)
 		{
-			// Create a response with the event data and set caching options and the ETag header
 			responseBuilder.cacheControl(cachePublicAndTenSeconds())
 					.tag(entityTag);
 
@@ -151,42 +139,35 @@ import static de.fhws.fiw.fds.sutton.server.api.queries.PagingBehaviorUsingOffse
 				.build()
 				.execute();
 
-		// Retrieve the event object from the response
+
 		Event event = (Event) response.getEntity();
 
-		// If the event is not found, return 404
 		if (event == null) {
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 
 
-		// Check if the requested ID matches the ID of the event
+
 		if (id != event.getId()) {
-			// If the requested ID does not match the event ID, return BAD_REQUEST
 
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 
-		// Generate an EntityTag
 
 		final EntityTag entityTag = EtagGenerator.createEntityTag(event);
 
 
-		// Check if the request's If-Match header matches the generated EntityTag
+
 
 		Response.ResponseBuilder builder = request.evaluatePreconditions(entityTag);
 
 
 
 		if (builder != null) {
-			// If-Match header doesn't match,
-			//  the client's version of the event is outdated, so return PRECONDITION_FAILED
+
 			return Response.status(Response.Status.PRECONDITION_FAILED).build();
 		} else {
 
-
-			// If-Match header matches the EntityTag,
-			// and the client has the latest version of the event, so proceed with the update
 
 			return new PutSingleEvent.Builder( ).setRequestedId( id )
 					.setModelToUpdate( personModel )
