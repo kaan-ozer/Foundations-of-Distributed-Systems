@@ -2,7 +2,7 @@
 
 This project is a comprehensive solution for efficient event management, encompassing a robust REST server and an intuitive graphical user interface. The server prioritizes hypermedia principles, efficient event filtering, ordering, and effective caching strategies. The Postman collection has been expanded for thorough testing of hypermedia links.
 
-## Project Components
+# Project Components
 
 ### 1. REST Server
 
@@ -54,3 +54,6 @@ This project is a comprehensive solution for efficient event management, encompa
 - Clicking on a row opens a detailed view of the corresponding event.
 - Provides support for paging, filtering, and sorting through hyperlinks supplied by the server.
 
+# Project Preview
+
+<img src="./preview.gif" alt="project on production" width="840" height="470">
